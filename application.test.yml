@@ -1,0 +1,11 @@
+app_port: 8080
+app_name: "book_my_show"
+log_level: "debug"
+graceful_shutdown_duration_secs: 10
+database_driver_name: "mysql"
+database_user_name: "root"
+database_password: "ons_vg"
+database_connection_type: "tcp"
+database_host_ip: "127.0.0.1"
+database_port: "3306"
+database_schema_name: "BOOK_MY_SHOW"
