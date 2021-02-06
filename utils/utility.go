@@ -1,8 +1,10 @@
 package utils
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
 	"strconv"
 
@@ -46,4 +48,10 @@ func GetConfigStringValue(key string) string {
 
 func PanicForkey(key string, err error) {
 	panic(fmt.Sprintf("error %v occured while reading config %s", err.Error(), key))
+}
+
+func CommonResponse(writer http.ResponseWriter, request *http.Request, httpstatuscode int, result interface{}) {
+	writer.Header().Set("Content-Type", "application/json")
+	writer.WriteHeader(httpstatuscode)
+	json.NewEncoder(writer).Encode(result)
 }

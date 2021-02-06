@@ -1,4 +1,4 @@
-app_port: 8080
+app_port: 8089
 app_name: "book_my_show"
 log_level: "info"
 graceful_shutdown_duration_secs: 10
