@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/vibhugarg123/book-my-show/constants"
 	"net/http"
 	"os"
 	"strconv"
@@ -54,4 +55,12 @@ func CommonResponse(writer http.ResponseWriter, request *http.Request, httpstatu
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(httpstatuscode)
 	json.NewEncoder(writer).Encode(result)
+}
+
+func ValidateIntegerType(value interface{}) error {
+	_, ok := value.(int)
+	if !ok {
+		return errors.New(constants.NOT_VALID_INTEGER)
+	}
+	return nil
 }

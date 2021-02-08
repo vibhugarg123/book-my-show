@@ -26,7 +26,7 @@ func (lh *LoginHandler) ServeHTTP(writer http.ResponseWriter, request *http.Requ
 	decoder := json.NewDecoder(request.Body)
 	err := decoder.Decode(&user)
 	if err != nil {
-		appcontext.Logger.Error().Err(err).Msg("failed to decode the request body to add new configuration mapping")
+		appcontext.Logger.Error().Err(err).Msg("failed to decode the request body for login")
 		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.REQUEST_DECODING_FAILED, constants.DECODING_REQUEST_FAILED})
 		return
 	}

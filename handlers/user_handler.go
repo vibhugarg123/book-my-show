@@ -26,7 +26,7 @@ func (auh *AddUserHandler) ServeHTTP(writer http.ResponseWriter, request *http.R
 	decoder := json.NewDecoder(request.Body)
 	err := decoder.Decode(&user)
 	if err != nil {
-		appcontext.Logger.Error().Err(err).Msg("failed to decode the request body to add new configuration mapping")
+		appcontext.Logger.Error().Err(err).Msg("failed to decode the request body to add new user")
 		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.REQUEST_DECODING_FAILED, constants.DECODING_REQUEST_FAILED})
 		return
 	}

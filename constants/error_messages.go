@@ -12,4 +12,10 @@ const (
 	USER_CREATION_FAILED        = "failed to create user"
 	DECODING_REQUEST_FAILED     = "failed to decode the request body"
 	USER_DOES_NOT_EXIST         = "user does not exist"
+	REGION_ID_MANDATORY         = "region id is missing in request"
+	REGION_NAME_MANDATORY       = "region name is missing in request"
+	REGION_ALREADY_EXISTS       = "region with region id- %d already exists"
+	ADD_REGION_FAILED           = "failed to add new region"
+	REGION_TYPE_MANDATORY       = "region type is missing in request"
+	REGION_DOES_NOT_EXIST       = "region with region id- %d do not exist"
 )

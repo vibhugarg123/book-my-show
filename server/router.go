@@ -10,9 +10,12 @@ import (
 
 func Router() http.Handler {
 	userService := service.NewUserService()
+	regionService := service.NewRegionService()
 	appcontext.Logger.Info().Msg("setting up routes")
 	router := mux.NewRouter()
 	router.Handle("/user", handlers.NewAddUserHandler(userService)).Methods("POST")
 	router.Handle("/login", handlers.NewLoginHandler(userService)).Methods("POST")
+	router.Handle("/region", handlers.NewAddRegionHandler(regionService)).Methods("POST")
+	router.Handle("/region/{region-id}", handlers.NewGetRegionHandler(regionService)).Methods("GET")
 	return router
 }

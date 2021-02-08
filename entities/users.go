@@ -11,15 +11,3 @@ type User struct {
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
-
-var UsersSchema = `
-CREATE TABLE users ( 
-		id integer,
-		first_name text,
-  		last_name text,
-    	email_id text,
-    	password text,
-   	    created_at DATETIME,
-        updated_at DATETIME
-   );
-`
