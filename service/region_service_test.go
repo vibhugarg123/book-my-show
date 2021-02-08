@@ -77,14 +77,14 @@ func (suite *regionServiceTestSuite) TestAddRegionReturnsErrorWhenRegionIdAlread
 			RegionType: 1,
 		},
 	}
-	suite.mockRegionRepository.EXPECT().FetchRegionById(region[0].Id).Return(region, nil)
+	suite.mockRegionRepository.EXPECT().FetchRegionById(int64(region[0].Id)).Return(region, nil)
 	regionReturned, err := suite.service.Add(region[0])
 	assert.Equal(suite.T(), entities.Region{}, regionReturned)
 	assert.NotNil(suite.T(), err)
 	assert.Equal(suite.T(), "region with region id- 1 already exists: region_creation_failed", err.Error())
 }
 
-func (suite *regionServiceTestSuite) TestAddRegionReturnsErrorWhenRegionIsCreatedSuccessfully() {
+func (suite *regionServiceTestSuite) TestAddRegionWhenRegionIsCreatedSuccessfully() {
 	region := []entities.Region{
 		{
 			Id:         1,
@@ -92,7 +92,7 @@ func (suite *regionServiceTestSuite) TestAddRegionReturnsErrorWhenRegionIsCreate
 			RegionType: 1,
 		},
 	}
-	suite.mockRegionRepository.EXPECT().FetchRegionById(region[0].Id).Return(nil, nil)
+	suite.mockRegionRepository.EXPECT().FetchRegionById(int64(region[0].Id)).Return(nil, nil)
 	suite.mockRegionRepository.EXPECT().InsertRegion(region[0]).Return(nil)
 	regionReturned, err := suite.service.Add(region[0])
 	assert.Equal(suite.T(), region[0], regionReturned)

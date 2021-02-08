@@ -48,7 +48,7 @@ func (mr *MockRegionRepositoryMockRecorder) InsertRegion(region interface{}) *go
 }
 
 // FetchRegionById mocks base method
-func (m *MockRegionRepository) FetchRegionById(arg0 int) ([]entities.Region, error) {
+func (m *MockRegionRepository) FetchRegionById(arg0 int64) ([]entities.Region, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FetchRegionById", arg0)
 	ret0, _ := ret[0].([]entities.Region)

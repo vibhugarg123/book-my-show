@@ -12,4 +12,8 @@ const (
 	REGION_DO_NOT_EXIST                  = "region_do_not_exist"
 	GET_REGION_CALL_FAILED               = "get_region_by_id_failed"
 	NOT_VALID_INTEGER                    = "invalid_integer"
+	THEATRE_CREATION_FAILED              = "theatre_creation_failed"
+	THEATRE_ALREADY_EXIST                = "theatre_already_exist"
+	THEATRE_DO_NOT_EXIST                 = "theatre_do_not_exist"
+	GET_THEATRES_CALL_FAILED             = "get_theatres_call_failed"
 )

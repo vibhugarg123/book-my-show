@@ -18,4 +18,11 @@ const (
 	ADD_REGION_FAILED           = "failed to add new region"
 	REGION_TYPE_MANDATORY       = "region type is missing in request"
 	REGION_DOES_NOT_EXIST       = "region with region id- %d do not exist"
+	THEATRE_NAME_MANDATORY      = "theatre name is missing in request"
+	THEATRE_ID_MANDATORY        = "theatre id is missing in request"
+	THEATRE_ADDRESS_MANDATORY   = "theatre address is mandatory in request"
+	THEATRE_REGION_ID_MANDATORY = "theatre region id is missing in request"
+	ADD_THEATRE_FAILED          = "failed to add new theatre"
+	THEATRE_ALREADY_EXISTS      = "theatre with details- %v already exists"
+	THEATRE_DOES_NOT_EXIST      = "theatre- %s do not exist"
 )

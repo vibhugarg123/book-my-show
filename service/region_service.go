@@ -24,7 +24,7 @@ func (r regionService) Add(region entities.Region) (entities.Region, error) {
 	if err != nil {
 		return entities.Region{}, err
 	}
-	existingRegion, err := r.regionRepository.FetchRegionById(region.Id)
+	existingRegion, err := r.regionRepository.FetchRegionById(int64(region.Id))
 	if err != nil {
 		appcontext.Logger.Error().
 			Str(constants.FAILED_FETCHING_RESULT_FROM_DATABASE, err.Error()).
@@ -48,7 +48,7 @@ func (r regionService) Add(region entities.Region) (entities.Region, error) {
 }
 
 func (r regionService) GetRegionById(regionId int) (entities.Region, error) {
-	region, err := r.regionRepository.FetchRegionById(regionId)
+	region, err := r.regionRepository.FetchRegionById(int64(regionId))
 	if err != nil {
 		appcontext.Logger.Error().
 			Str(constants.FAILED_FETCHING_RESULT_FROM_DATABASE, err.Error()).

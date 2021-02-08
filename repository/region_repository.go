@@ -9,7 +9,7 @@ import (
 
 type RegionRepository interface {
 	InsertRegion(region entities.Region) error
-	FetchRegionById(int) ([]entities.Region, error)
+	FetchRegionById(int64) ([]entities.Region, error)
 }
 
 type regionRepository struct {
@@ -22,7 +22,7 @@ func (r regionRepository) InsertRegion(region entities.Region) error {
 	return tx.Commit()
 }
 
-func (r regionRepository) FetchRegionById(regionId int) ([]entities.Region, error) {
+func (r regionRepository) FetchRegionById(regionId int64) ([]entities.Region, error) {
 	var regions []entities.Region
 	err := r.db.Select(&regions, "SELECT * FROM regions WHERE id=?", regionId)
 	return regions, err

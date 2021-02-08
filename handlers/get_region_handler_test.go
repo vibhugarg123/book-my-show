@@ -33,8 +33,8 @@ func (suite *getRegionHandlerTestSuite) SetupTest() {
 	suite.getRegionHandler = NewGetRegionHandler(suite.regionService)
 }
 
-func (suite *getRegionHandlerTestSuite) TestGetRegionHandlerReturnsBadRequestWhenFailedToDecodeRequestBody() {
-	request, err := http.NewRequest("GET", "/region/1", nil)
+func (suite *getRegionHandlerTestSuite) TestGetRegionHandlerReturnsBadRequestWhenRegionIdIsNotValidInteger() {
+	request, err := http.NewRequest("GET", "/region/A", nil)
 	assert.Nil(suite.T(), err)
 
 	response := httptest.NewRecorder()
@@ -43,7 +43,7 @@ func (suite *getRegionHandlerTestSuite) TestGetRegionHandlerReturnsBadRequestWhe
 	router.ServeHTTP(response, request)
 
 	assert.Equal(suite.T(), http.StatusBadRequest, response.Code)
-	assert.Equal(suite.T(), []byte(`{"error_code":"decoding_request_failed","error_message":"failed to decode the request body"}`), bytes.TrimSpace(response.Body.Bytes()))
+	assert.Equal(suite.T(), []byte(`{"error_code":"invalid_integer","error_message":"strconv.Atoi: parsing \"A\": invalid syntax"}`), bytes.TrimSpace(response.Body.Bytes()))
 }
 
 func (suite *getRegionHandlerTestSuite) TestGetRegionHandlerReturnsSuccessResponse() {
@@ -63,7 +63,7 @@ func (suite *getRegionHandlerTestSuite) TestGetRegionHandlerReturnsSuccessRespon
 	router.ServeHTTP(response, request)
 
 	assert.Equal(suite.T(), http.StatusOK, response.Code)
-	assert.Equal(suite.T(), []byte(`{"error_code":"invalid_integer","error_message":"strconv.Atoi: parsing \"\": invalid syntax"}`), bytes.TrimSpace(response.Body.Bytes()))
+	assert.Equal(suite.T(), []byte(`{"id":1,"name":"Delhi","region_type":1,"parent_id":{"Int64":0,"Valid":false},"created_at":"0001-01-01T00:00:00Z","updated_at":"0001-01-01T00:00:00Z"}`), bytes.TrimSpace(response.Body.Bytes()))
 }
 
 func (suite *getRegionHandlerTestSuite) TestGetRegionHandlerWhenRegionDoesNotExist() {
