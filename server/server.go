@@ -5,6 +5,7 @@ import (
 	"github.com/urfave/negroni"
 	"github.com/vibhugarg123/book-my-show/appcontext"
 	"github.com/vibhugarg123/book-my-show/config"
+	"github.com/vibhugarg123/book-my-show/middleware"
 	"gopkg.in/tylerb/graceful.v1"
 )
 
@@ -12,6 +13,7 @@ func Start() error {
 	router := Router()
 	server := negroni.New()
 	server.Use(negroni.NewRecovery())
+	server.Use(middleware.MDCMiddleware())
 	server.Use(negroni.NewLogger())
 	server.UseHandler(router)
 	appcontext.Logger.Info().Msg("starting book my show application")
