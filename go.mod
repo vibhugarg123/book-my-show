@@ -5,7 +5,7 @@ go 1.15
 require (
 	github.com/getsentry/sentry-go v0.9.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
-	github.com/golang/mock v1.3.1
+	github.com/golang/mock v1.4.4
 	github.com/gorilla/mux v1.8.0
 	github.com/jmoiron/sqlx v1.3.1
 	github.com/magiconair/properties v1.8.1
