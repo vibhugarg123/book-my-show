@@ -18,7 +18,10 @@ type regionRepository struct {
 
 func (r regionRepository) InsertRegion(region entities.Region) error {
 	tx := r.db.MustBegin()
-	r.db.MustExec("INSERT INTO regions (id,name,region_type,parent_id,created_at,updated_at) VALUES (?,?,?,?,?,?)", region.Id, region.Name, region.RegionType, region.ParentId, time.Now(), time.Now())
+	_, err := tx.Exec("INSERT INTO regions (id,name,region_type,parent_id,created_at,updated_at) VALUES (?,?,?,?,?,?)", region.Id, region.Name, region.RegionType, region.ParentId, time.Now(), time.Now())
+	if err != nil {
+		return err
+	}
 	return tx.Commit()
 }
 
