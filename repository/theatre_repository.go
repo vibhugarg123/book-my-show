@@ -26,7 +26,10 @@ func (t theatreRepository) FetchTheatreByNameRegionIdAndAddress(theatre entities
 
 func (t theatreRepository) InsertTheatre(theatre entities.Theatre) error {
 	tx := t.db.MustBegin()
-	t.db.MustExec("INSERT INTO theatres (name,address,region_id,created_at,updated_at) VALUES (?,?,?,?,?)", theatre.Name, theatre.Address, theatre.RegionId, time.Now(), time.Now())
+	_, err := tx.Exec("INSERT INTO theatres (name,address,region_id,created_at,updated_at) VALUES (?,?,?,?,?)", theatre.Name, theatre.Address, theatre.RegionId, time.Now(), time.Now())
+	if err != nil {
+		return err
+	}
 	return tx.Commit()
 }
 

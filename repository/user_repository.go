@@ -23,7 +23,10 @@ func NewUserRepository() UserRepository {
 
 func (u userRepository) InsertUser(user entities.User) error {
 	tx := u.db.MustBegin()
-	u.db.MustExec("INSERT INTO users  (first_name,last_name,email_id,password,created_at,updated_at) VALUES (?,?,?,?,?,?)", user.FirstName, user.LastName, user.EmailId, user.Password, time.Now(), time.Now())
+	_, err := tx.Exec("INSERT INTO users  (first_name,last_name,email_id,password,created_at,updated_at) VALUES (?,?,?,?,?,?)", user.FirstName, user.LastName, user.EmailId, user.Password, time.Now(), time.Now())
+	if err != nil {
+		return err
+	}
 	return tx.Commit()
 }
 
