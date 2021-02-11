@@ -18,4 +18,6 @@ require (
 	github.com/urfave/negroni v1.0.0
 	gopkg.in/tylerb/graceful.v1 v1.2.15
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gorm.io/driver/sqlite v1.1.4 // indirect
+	gorm.io/gorm v1.20.12 // indirect
 )
