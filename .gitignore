@@ -18,3 +18,4 @@
 
 # Go code-coverage files
 coverage.out
+coverage.out.tmp
