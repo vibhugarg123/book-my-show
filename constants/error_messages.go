@@ -46,4 +46,5 @@ const (
 	SHOW_END_TIME_MISSING_IN_SHOW_CREATION       = "show end time is mandatory in show creation request"
 	SHOW_NAME_MISSING_IN_SHOW_CREATION           = "show time name (morning/noon/evening/night) is mandatory in show creation request"
 	SHOW_ALREADY_EXIST                           = "show already exist for- (movie_id:%d) , (hall_id:%d) & (show_timing:%v)"
+	HALL_WITH_GIVEN_ID_DO_NOT_EXISTS             = "hall with id - %d do not exists"
 )

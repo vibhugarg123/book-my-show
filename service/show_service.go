@@ -25,8 +25,14 @@ func (s showService) Add(show entities.Show) (entities.Show, error) {
 		return entities.Show{}, err
 	}
 	hallexists, err := s.hallRepository.FetchHallByHallId(show.HallId.Int64)
-	if err != nil || len(hallexists) <= 0 {
+	if err != nil {
 		return entities.Show{}, err
+	}
+	if len(hallexists) <= 0 {
+		appcontext.Logger.Error().
+			Str(constants.FAILED_FETCHING_RESULT_FROM_DATABASE, fmt.Sprintf(constants.HALL_WITH_GIVEN_ID_DO_NOT_EXISTS, show.HallId.Int64)).
+			Msg(fmt.Sprintf(constants.HALL_WITH_GIVEN_ID_DO_NOT_EXISTS, show.HallId.Int64))
+		return entities.Show{}, errors.Wrap(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), fmt.Sprintf(constants.HALL_WITH_GIVEN_ID_DO_NOT_EXISTS, show.HallId.Int64))
 	}
 	if show.AvailableSeats == 0 || (show.AvailableSeats > hallexists[0].Seats) {
 		show.AvailableSeats = hallexists[0].Seats
