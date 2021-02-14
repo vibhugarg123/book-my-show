@@ -16,6 +16,7 @@ const (
 	REGION_NAME_MANDATORY              = "region name is missing in request"
 	REGION_ALREADY_EXISTS              = "region with region id- %d already exists"
 	ADD_REGION_FAILED                  = "failed to add new region"
+	ADD_MOVIE_FAILED                   = "failed to add new movie"
 	REGION_TYPE_MANDATORY              = "region type is missing in request"
 	REGION_DOES_NOT_EXIST              = "region with region id- %d do not exist"
 	THEATRE_NAME_MANDATORY             = "theatre name is missing in request"
@@ -29,5 +30,10 @@ const (
 	SEATS_NUMBER_INVALID               = "number of seats are invalid in request"
 	THEATRE_ID_HALL_CREATION_INVALID   = "invalid theatre-id for creating hall"
 	HALL_ALREADY_EXISTS                = "hall with hall name- %s & theatre-id %d already exists"
+	MOVIE_ALREADY_EXISTS               = "movie with name- %s already exists"
 	HALLS_DO_NOT_EXIST_WITH_THEATRE_ID = "halls with theatre id- %d do not exist"
+	MOVIE_NAME_MANDATORY               = "movie name is missing in request"
+	DIRECTOR_NAME_MANDATORY            = "director name is missing in request"
+	RELEASE_DATE_MANDATORY             = "release date is mandatory for creating movie"
+	ACTIVE_MOVIES_NOT_PRESENT          = "there are no active movies"
 )
