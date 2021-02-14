@@ -77,6 +77,21 @@ func (mr *MockHallRepositoryMockRecorder) FetchHallByTheatreId(arg0 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchHallByTheatreId", reflect.TypeOf((*MockHallRepository)(nil).FetchHallByTheatreId), arg0)
 }
 
+// FetchHallByHallId mocks base method
+func (m *MockHallRepository) FetchHallByHallId(arg0 int64) ([]entities.Hall, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FetchHallByHallId", arg0)
+	ret0, _ := ret[0].([]entities.Hall)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FetchHallByHallId indicates an expected call of FetchHallByHallId
+func (mr *MockHallRepositoryMockRecorder) FetchHallByHallId(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchHallByHallId", reflect.TypeOf((*MockHallRepository)(nil).FetchHallByHallId), arg0)
+}
+
 // FetchHallByNameAndTheatreId mocks base method
 func (m *MockHallRepository) FetchHallByNameAndTheatreId(arg0 entities.Hall) ([]entities.Hall, error) {
 	m.ctrl.T.Helper()

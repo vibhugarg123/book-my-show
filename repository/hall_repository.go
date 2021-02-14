@@ -11,6 +11,7 @@ type HallRepository interface {
 	InsertHall(entities.Hall) error
 	FetchHallByName(string) ([]entities.Hall, error)
 	FetchHallByTheatreId(int) ([]entities.Hall, error)
+	FetchHallByHallId(int64) ([]entities.Hall, error)
 	FetchHallByNameAndTheatreId(entities.Hall) ([]entities.Hall, error)
 }
 
@@ -42,6 +43,12 @@ func (h hallRepository) FetchHallByName(hallName string) ([]entities.Hall, error
 func (h hallRepository) FetchHallByTheatreId(theatreId int) ([]entities.Hall, error) {
 	var halls []entities.Hall
 	err := h.db.Select(&halls, "SELECT * FROM halls WHERE theatre_id=?", theatreId)
+	return halls, err
+}
+
+func (h hallRepository) FetchHallByHallId(hallId int64) ([]entities.Hall, error) {
+	var halls []entities.Hall
+	err := h.db.Select(&halls, "SELECT * FROM halls WHERE id=?", hallId)
 	return halls, err
 }
 

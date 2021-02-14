@@ -22,4 +22,5 @@ const (
 	HALLS_DO_NOT_EXIST                   = "halls_do_not_exist"
 	NO_ACTIVE_MOVIES                     = "no_active_movies"
 	GET_HALLS_BY_THEATRE_ID_FAILED       = "get_halls_by_theatre_id_failed"
+	SHOW_CREATION_FAILED                 = "show_creation_failed"
 )
