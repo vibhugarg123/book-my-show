@@ -12,6 +12,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/repository"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"testing"
 )
 
@@ -42,7 +43,7 @@ func (suite *theatreServiceTestSuite) TestAddTheatreReturnsErrorWhenTheatreNameI
 	theatreReturned, err := suite.service.Add(theatre)
 	assert.Equal(suite.T(), entities.Theatre{}, theatreReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.THEATRE_NAME_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.THEATRE_NAME_MANDATORY).Error(), err.Error())
 }
 
 func (suite *theatreServiceTestSuite) TestAddTheatreReturnsErrorWhenTheatreAddressIsMissing() {
@@ -53,7 +54,7 @@ func (suite *theatreServiceTestSuite) TestAddTheatreReturnsErrorWhenTheatreAddre
 	theatreReturned, err := suite.service.Add(theatre)
 	assert.Equal(suite.T(), entities.Theatre{}, theatreReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.THEATRE_ADDRESS_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.THEATRE_ADDRESS_MANDATORY).Error(), err.Error())
 }
 
 func (suite *theatreServiceTestSuite) TestAddTheatreReturnsErrorWhenTheatreRegionIdIsMissing() {
@@ -64,7 +65,7 @@ func (suite *theatreServiceTestSuite) TestAddTheatreReturnsErrorWhenTheatreRegio
 	theatreReturned, err := suite.service.Add(theatre)
 	assert.Equal(suite.T(), entities.Theatre{}, theatreReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.THEATRE_REGION_ID_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.THEATRE_REGION_ID_MANDATORY).Error(), err.Error())
 }
 
 func (suite *theatreServiceTestSuite) TestAddTheatreReturnsErrorWhenTheatreBodyIsMissing() {
@@ -72,7 +73,7 @@ func (suite *theatreServiceTestSuite) TestAddTheatreReturnsErrorWhenTheatreBodyI
 	theatreReturned, err := suite.service.Add(theatre)
 	assert.Equal(suite.T(), entities.Theatre{}, theatreReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.EMPTY_REQUEST_BODY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.EMPTY_REQUEST_BODY).Error(), err.Error())
 }
 
 func (suite *theatreServiceTestSuite) TestAddTheatreReturnsErrorWhenTheatreRegionIdDoesNotExist() {

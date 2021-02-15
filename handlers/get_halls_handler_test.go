@@ -14,6 +14,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/service"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -49,12 +50,12 @@ func (suite *getHallsByTheatreIdHandlerTestSuite) TestGetHallsByTheatreIdHandler
 	theatreId := 8
 	request, err := http.NewRequest("GET", "/hall/1", nil)
 	assert.Nil(suite.T(), err)
-	suite.hallService.EXPECT().GetHallByTheatreId(gomock.Any()).Return([]entities.Hall{}, errors.Wrap(errors.New(constants.HALLS_DO_NOT_EXIST), fmt.Sprintf(constants.HALLS_DO_NOT_EXIST_WITH_THEATRE_ID, theatreId)))
+	suite.hallService.EXPECT().GetHallByTheatreId(gomock.Any()).Return([]entities.Hall{}, utils.WrapValidationError(errors.New(constants.HALLS_DO_NOT_EXIST), fmt.Sprintf(constants.HALLS_DO_NOT_EXIST_WITH_THEATRE_ID, theatreId)))
 	response := httptest.NewRecorder()
 	router := mux.NewRouter()
 	router.Handle("/hall/{theatre-id}", suite.getHallsHandler)
 	router.ServeHTTP(response, request)
-	assert.Equal(suite.T(), http.StatusInternalServerError, response.Code)
+	assert.Equal(suite.T(), http.StatusBadRequest, response.Code)
 	assert.Equal(suite.T(), []byte(`{"error_code":"get_halls_by_theatre_id_failed","error_message":"halls with theatre id- 8 do not exist: halls_do_not_exist"}`), bytes.TrimSpace(response.Body.Bytes()))
 }
 

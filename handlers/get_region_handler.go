@@ -37,7 +37,10 @@ func (grh *GetRegionHandler) ServeHTTP(writer http.ResponseWriter, request *http
 	}
 	appcontext.Logger.Info().Msg(fmt.Sprintf("region to get for region-id %v", regionIdInInteger))
 	region, err := grh.service.GetRegionById(regionIdInInteger)
-	if err != nil {
+	if utils.IsValidationError(err) {
+		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.GET_REGION_CALL_FAILED, err.Error()})
+		return
+	} else if err != nil {
 		utils.CommonResponse(writer, request, http.StatusInternalServerError, domain.Error{constants.GET_REGION_CALL_FAILED, err.Error()})
 		return
 	}

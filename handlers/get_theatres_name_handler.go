@@ -25,7 +25,10 @@ func (ngt *GetTheatreByNameHandler) ServeHTTP(writer http.ResponseWriter, reques
 	theatreName := vars["theatre-name"]
 	appcontext.Logger.Info().Msgf("request received for fetching theatres with name %s", theatreName)
 	theatres, err := ngt.service.GetTheatreByName(theatreName)
-	if err != nil {
+	if utils.IsValidationError(err) {
+		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.GET_THEATRES_CALL_FAILED, err.Error()})
+		return
+	} else if err != nil {
 		utils.CommonResponse(writer, request, http.StatusInternalServerError, domain.Error{constants.GET_THEATRES_CALL_FAILED, err.Error()})
 		return
 	}

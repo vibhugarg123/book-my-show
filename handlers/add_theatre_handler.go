@@ -32,7 +32,10 @@ func (ath *AddTheatreHandler) ServeHTTP(writer http.ResponseWriter, request *htt
 	}
 	appcontext.Logger.Info().Msgf("request received to add new theatre %v", theatre)
 	theatre, err = ath.service.Add(theatre)
-	if err != nil {
+	if utils.IsValidationError(err) {
+		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.THEATRE_CREATION_FAILED, err.Error()})
+		return
+	} else if err != nil {
 		utils.CommonResponse(writer, request, http.StatusInternalServerError, domain.Error{constants.THEATRE_CREATION_FAILED, err.Error()})
 		return
 	}

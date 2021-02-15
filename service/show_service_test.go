@@ -12,6 +12,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/repository"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"testing"
 	"time"
 )
@@ -43,7 +44,7 @@ func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowObjectIsMissin
 	showReturned, err := suite.service.Add(show[0])
 	assert.Equal(suite.T(), entities.Show{}, showReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.EMPTY_REQUEST_BODY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.EMPTY_REQUEST_BODY).Error(), err.Error())
 }
 
 func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowMovieIdIsNotValid() {
@@ -69,7 +70,7 @@ func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowMovieIdIsNotVa
 	showReturned, err := suite.service.Add(show[0])
 	assert.Equal(suite.T(), entities.Show{}, showReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.MOVIE_ID_MANDATORY_SHOW_CREATION).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.MOVIE_ID_MANDATORY_SHOW_CREATION).Error(), err.Error())
 }
 
 func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenHallIdIsNotValid() {
@@ -95,7 +96,7 @@ func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenHallIdIsNotValid()
 	showReturned, err := suite.service.Add(show[0])
 	assert.Equal(suite.T(), entities.Show{}, showReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.HALL_ID_MANDATORY_SHOW_CREATION).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.HALL_ID_MANDATORY_SHOW_CREATION).Error(), err.Error())
 }
 
 func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowDateIsNotPresent() {
@@ -120,7 +121,7 @@ func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowDateIsNotPrese
 	showReturned, err := suite.service.Add(show[0])
 	assert.Equal(suite.T(), entities.Show{}, showReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.SHOW_DATE_MANDATORY_IN_SHOW_CREATION).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.SHOW_DATE_MANDATORY_IN_SHOW_CREATION).Error(), err.Error())
 }
 
 func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenSeatPriceIsZero() {
@@ -146,7 +147,7 @@ func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenSeatPriceIsZero() 
 	showReturned, err := suite.service.Add(show[0])
 	assert.Equal(suite.T(), entities.Show{}, showReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.SEAT_PRICE_MANDATORY_IN_SHOW_CREATION).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.SEAT_PRICE_MANDATORY_IN_SHOW_CREATION).Error(), err.Error())
 }
 
 func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowTimingInformationIsMissing() {
@@ -167,7 +168,7 @@ func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowTimingInformat
 	showReturned, err := suite.service.Add(show[0])
 	assert.Equal(suite.T(), entities.Show{}, showReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.SHOW_TIMING_DETAILS_MISSING_IN_SHOW_CREATION).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.SHOW_TIMING_DETAILS_MISSING_IN_SHOW_CREATION).Error(), err.Error())
 }
 
 func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowStartTimeInformationIsMissing() {
@@ -192,7 +193,7 @@ func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowStartTimeInfor
 	showReturned, err := suite.service.Add(show[0])
 	assert.Equal(suite.T(), entities.Show{}, showReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.SHOW_START_TIME_MISSING_IN_SHOW_CREATION).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.SHOW_START_TIME_MISSING_IN_SHOW_CREATION).Error(), err.Error())
 }
 
 func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowEndTimeInformationIsMissing() {
@@ -217,7 +218,7 @@ func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowEndTimeInforma
 	showReturned, err := suite.service.Add(show[0])
 	assert.Equal(suite.T(), entities.Show{}, showReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.SHOW_END_TIME_MISSING_IN_SHOW_CREATION).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.SHOW_END_TIME_MISSING_IN_SHOW_CREATION).Error(), err.Error())
 }
 
 func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowTimingDayClassificationInformationIsMissing() {
@@ -242,7 +243,7 @@ func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowTimingDayClass
 	showReturned, err := suite.service.Add(show[0])
 	assert.Equal(suite.T(), entities.Show{}, showReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.SHOW_NAME_MISSING_IN_SHOW_CREATION).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.SHOW_NAME_MISSING_IN_SHOW_CREATION).Error(), err.Error())
 }
 
 func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenHallIdDoNotExists() {
@@ -269,7 +270,7 @@ func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenHallIdDoNotExists(
 	showReturned, err := suite.service.Add(show[0])
 	assert.Equal(suite.T(), entities.Show{}, showReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), fmt.Sprintf(constants.HALL_WITH_GIVEN_ID_DO_NOT_EXISTS, show[0].HallId.Int64)).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), fmt.Sprintf(constants.HALL_WITH_GIVEN_ID_DO_NOT_EXISTS, show[0].HallId.Int64)).Error(), err.Error())
 }
 
 func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowAlreadyExists() {
@@ -308,7 +309,7 @@ func (suite *showServiceTestSuite) TestAddShowReturnsErrorWhenShowAlreadyExists(
 	showReturned, err := suite.service.Add(show[0])
 	assert.Equal(suite.T(), entities.Show{}, showReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), fmt.Sprintf(constants.SHOW_ALREADY_EXIST, show[0].MovieId.Int64, show[0].HallId.Int64, show[0].ShowDate)).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), fmt.Sprintf(constants.SHOW_ALREADY_EXIST, show[0].MovieId.Int64, show[0].HallId.Int64, show[0].ShowDate)).Error(), err.Error())
 }
 
 func (suite *showServiceTestSuite) TestShowIsCreatedSuccessfully() {

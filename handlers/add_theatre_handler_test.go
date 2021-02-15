@@ -14,6 +14,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/service"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -76,13 +77,13 @@ func (suite *addTheatreHandlerTestSuite) TestAddTheatreHandlerReturnsTheatreAlre
 		Address:  "GT Road, Panipat",
 		RegionId: sql.NullInt64{Valid: true, Int64: 6},
 	}
-	suite.theatreService.EXPECT().Add(gomock.Any()).Return(entities.Theatre{}, errors.Wrap(errors.New(constants.THEATRE_ALREADY_EXIST), fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, expectedTheatre)))
+	suite.theatreService.EXPECT().Add(gomock.Any()).Return(entities.Theatre{}, utils.WrapValidationError(errors.New(constants.THEATRE_ALREADY_EXIST), fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, expectedTheatre)))
 
 	response := httptest.NewRecorder()
 	handler := http.Handler(suite.addTheatreHandler)
 	handler.ServeHTTP(response, request)
 
-	assert.Equal(suite.T(), http.StatusInternalServerError, response.Code)
+	assert.Equal(suite.T(), http.StatusBadRequest, response.Code)
 	assert.Equal(suite.T(), []byte(`{"error_code":"theatre_creation_failed","error_message":"theatre with details- {0 PVR Cinemas GT Road, Panipat {6 true} 0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC} already exists: theatre_already_exist"}`), bytes.TrimSpace(response.Body.Bytes()))
 }
 

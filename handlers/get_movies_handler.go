@@ -20,7 +20,10 @@ func NewGetMoviesHandler(movieService service.MovieService) *GetMoviesHandler {
 
 func (gmh *GetMoviesHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	movies, err := gmh.service.GetActiveMovies()
-	if err != nil {
+	if utils.IsValidationError(err) {
+		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.GET_MOVIES_CALL_FAILED, err.Error()})
+		return
+	} else if err != nil {
 		utils.CommonResponse(writer, request, http.StatusInternalServerError, domain.Error{constants.GET_MOVIES_CALL_FAILED, err.Error()})
 		return
 	}

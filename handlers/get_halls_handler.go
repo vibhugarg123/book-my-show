@@ -37,7 +37,10 @@ func (ghh *GetHallHandler) ServeHTTP(writer http.ResponseWriter, request *http.R
 	}
 	appcontext.Logger.Info().Msg(fmt.Sprintf("halls to get for theatre-id %v", theatreIdInInteger))
 	halls, err := ghh.service.GetHallByTheatreId(theatreIdInInteger)
-	if err != nil {
+	if utils.IsValidationError(err) {
+		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.GET_HALLS_BY_THEATRE_ID_FAILED, err.Error()})
+		return
+	} else if err != nil {
 		utils.CommonResponse(writer, request, http.StatusInternalServerError, domain.Error{constants.GET_HALLS_BY_THEATRE_ID_FAILED, err.Error()})
 		return
 	}

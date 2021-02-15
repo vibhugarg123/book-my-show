@@ -32,7 +32,10 @@ func (auh *AddUserHandler) ServeHTTP(writer http.ResponseWriter, request *http.R
 	}
 	appcontext.Logger.Info().Msgf("request received to add user %v", user)
 	user, err = auh.service.Add(user)
-	if err != nil {
+	if utils.IsValidationError(err) {
+		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.FAILED_CREATING_USER, err.Error()})
+		return
+	} else if err != nil {
 		utils.CommonResponse(writer, request, http.StatusInternalServerError, domain.Error{constants.FAILED_CREATING_USER, err.Error()})
 		return
 	}

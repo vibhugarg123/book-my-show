@@ -13,6 +13,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/service"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -86,12 +87,12 @@ func (suite *addShowHandlerTestSuite) TestAddShowHandlerReturnsErrorWhenMovieIdI
 	requestBody := `{"movie_id":{"valid":false,"int64":9},"hall_id":{"valid":true,"int64":1},"show_date":"2021-02-14T09:30:00+05:30","timing_id":{"name":"Morning","start_time":"2021-02-14T09:30:00+05:30","end_time":"2021-02-14T13:30:00+05:30"},"seat_price":190.85,"available_seats":200}`
 	request, err := http.NewRequest("POST", "/show", bytes.NewBuffer([]byte(requestBody)))
 	assert.Nil(suite.T(), err)
-	suite.showService.EXPECT().Add(gomock.Any()).Return(entities.Show{}, errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.MOVIE_ID_MANDATORY_SHOW_CREATION))
+	suite.showService.EXPECT().Add(gomock.Any()).Return(entities.Show{}, utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.MOVIE_ID_MANDATORY_SHOW_CREATION))
 	response := httptest.NewRecorder()
 	handler := http.Handler(suite.addShowHandler)
 	handler.ServeHTTP(response, request)
 
-	assert.Equal(suite.T(), http.StatusInternalServerError, response.Code)
+	assert.Equal(suite.T(), http.StatusBadRequest, response.Code)
 	assert.Equal(suite.T(), []byte(`{"error_code":"show_creation_failed","error_message":"movie id is mandatory in it's show creation request: request_invalid"}`), bytes.TrimSpace(response.Body.Bytes()))
 }
 

@@ -13,6 +13,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/service"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -75,13 +76,13 @@ func (suite *addRegionHandlerTestSuite) TestAddRegionHandlerWhenRegionAlreadyExi
 		Name:       "Delhi",
 		RegionType: 1,
 	}
-	suite.regionService.EXPECT().Add(region).Return(entities.Region{}, errors.Wrap(errors.New(constants.REGION_CREATION_FAILED), fmt.Sprintf(constants.REGION_ALREADY_EXISTS, region.Id)))
+	suite.regionService.EXPECT().Add(region).Return(entities.Region{}, utils.WrapValidationError(errors.New(constants.REGION_CREATION_FAILED), fmt.Sprintf(constants.REGION_ALREADY_EXISTS, region.Id)))
 
 	response := httptest.NewRecorder()
 	handler := http.Handler(suite.addRegionHandler)
 	handler.ServeHTTP(response, request)
 
-	assert.Equal(suite.T(), http.StatusInternalServerError, response.Code)
+	assert.Equal(suite.T(), http.StatusBadRequest, response.Code)
 	assert.Equal(suite.T(), []byte(`{"error_code":"region_creation_failed","error_message":"region with region id- 1 already exists: region_creation_failed"}`), bytes.TrimSpace(response.Body.Bytes()))
 }
 

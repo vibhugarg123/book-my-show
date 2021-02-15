@@ -12,6 +12,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/service"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -40,9 +41,9 @@ func (suite *getMoviesHandlerTestSuite) TestGetMoviesHandlerReturnsActiveMoviesD
 	response := httptest.NewRecorder()
 	router := mux.NewRouter()
 	router.Handle("/movies", suite.getMovieHandler)
-	suite.movieService.EXPECT().GetActiveMovies().Return(nil, errors.Wrap(errors.New(constants.NO_ACTIVE_MOVIES), constants.ACTIVE_MOVIES_NOT_PRESENT))
+	suite.movieService.EXPECT().GetActiveMovies().Return(nil, utils.WrapValidationError(errors.New(constants.NO_ACTIVE_MOVIES), constants.ACTIVE_MOVIES_NOT_PRESENT))
 	router.ServeHTTP(response, request)
-	assert.Equal(suite.T(), http.StatusInternalServerError, response.Code)
+	assert.Equal(suite.T(), http.StatusBadRequest, response.Code)
 	assert.Equal(suite.T(), []byte(`{"error_code":"get_movies_active_failed","error_message":"there are no active movies: no_active_movies"}`), bytes.TrimSpace(response.Body.Bytes()))
 }
 

@@ -7,6 +7,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/repository"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"github.com/vibhugarg123/book-my-show/validation"
 	"strings"
 )
@@ -22,7 +23,7 @@ type theatreService struct {
 }
 
 func (t theatreService) Add(theatre entities.Theatre) (entities.Theatre, error) {
-	err := validation.AddNewTheatreValidation(theatre)
+	err := validation.CreateNewTheatreValidator(theatre)
 	if err != nil {
 		return entities.Theatre{}, err
 	}
@@ -31,33 +32,33 @@ func (t theatreService) Add(theatre entities.Theatre) (entities.Theatre, error) 
 		appcontext.Logger.Error().
 			Str(constants.FAILED_FETCHING_RESULT_FROM_DATABASE, err.Error()).
 			Msg(constants.FAILED_GET_DB_CALL)
-		return entities.Theatre{}, errors.Wrap(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
+		return entities.Theatre{}, utils.WrapValidationError(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
 	}
 	if len(existingRegion) == 0 {
 		appcontext.Logger.Error().
 			Str(constants.REGION_DO_NOT_EXIST, fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, theatre.RegionId.Int64)).
 			Msg(fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, theatre.RegionId.Int64))
-		return entities.Theatre{}, errors.Wrap(errors.New(constants.REGION_DO_NOT_EXIST), fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, theatre.RegionId.Int64))
+		return entities.Theatre{}, utils.WrapValidationError(errors.New(constants.REGION_DO_NOT_EXIST), fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, theatre.RegionId.Int64))
 	}
 	existingTheatres, err := t.theatreRepository.FetchTheatreByNameRegionIdAndAddress(theatre)
 	if err != nil {
 		appcontext.Logger.Error().
 			Str(constants.FAILED_FETCHING_RESULT_FROM_DATABASE, err.Error()).
 			Msg(constants.FAILED_GET_DB_CALL)
-		return entities.Theatre{}, errors.Wrap(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
+		return entities.Theatre{}, utils.WrapValidationError(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
 	}
 	if len(existingTheatres) > 0 {
 		appcontext.Logger.Error().
 			Str(constants.THEATRE_ALREADY_EXIST, fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, theatre)).
 			Msg(fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, theatre))
-		return entities.Theatre{}, errors.Wrap(errors.New(constants.THEATRE_ALREADY_EXIST), fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, theatre))
+		return entities.Theatre{}, utils.WrapValidationError(errors.New(constants.THEATRE_ALREADY_EXIST), fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, theatre))
 	}
 	err = t.theatreRepository.InsertTheatre(theatre)
 	if err != nil {
 		appcontext.Logger.Error().
 			Str(constants.FAILED_INSERT_DATABASE, err.Error()).
 			Msg(err.Error())
-		return entities.Theatre{}, errors.Wrap(errors.New(constants.ADD_THEATRE_FAILED), err.Error())
+		return entities.Theatre{}, utils.WrapValidationError(errors.New(constants.ADD_THEATRE_FAILED), err.Error())
 	}
 	return theatre, nil
 }
@@ -67,20 +68,20 @@ func (t theatreService) GetTheatreByName(theatreName string) ([]entities.Theatre
 		appcontext.Logger.Error().
 			Str(constants.REQUEST_INVALID, constants.THEATRE_NAME_MANDATORY).
 			Msg(constants.THEATRE_NAME_MANDATORY)
-		return []entities.Theatre{}, errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.THEATRE_NAME_MANDATORY)
+		return []entities.Theatre{}, utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.THEATRE_NAME_MANDATORY)
 	}
 	theatres, err := t.theatreRepository.FetchTheatreByName(theatreName)
 	if err != nil {
 		appcontext.Logger.Error().
 			Str(constants.FAILED_FETCHING_RESULT_FROM_DATABASE, err.Error()).
 			Msg(constants.FAILED_GET_DB_CALL)
-		return []entities.Theatre{}, errors.Wrap(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
+		return []entities.Theatre{}, utils.WrapValidationError(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
 	}
 	if len(theatres) == 0 {
 		appcontext.Logger.Error().
 			Str(constants.THEATRE_DO_NOT_EXIST, fmt.Sprintf(constants.THEATRE_DOES_NOT_EXIST, theatreName)).
 			Msg(fmt.Sprintf(constants.THEATRE_DOES_NOT_EXIST, theatreName))
-		return []entities.Theatre{}, errors.Wrap(errors.New(constants.THEATRE_DO_NOT_EXIST), fmt.Sprintf(constants.THEATRE_DOES_NOT_EXIST, theatreName))
+		return []entities.Theatre{}, utils.WrapValidationError(errors.New(constants.THEATRE_DO_NOT_EXIST), fmt.Sprintf(constants.THEATRE_DOES_NOT_EXIST, theatreName))
 	}
 	return theatres, nil
 }

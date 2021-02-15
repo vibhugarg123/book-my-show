@@ -11,6 +11,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/repository"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"testing"
 )
 
@@ -43,7 +44,7 @@ func (suite *userServiceTestSuite) TestCreateUserReturnsErrorWhenEmailIdAlreadyE
 	userExists, err := suite.service.Add(user[0])
 	assert.Equal(suite.T(), entities.User{}, userExists)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.FAILED_CREATING_USER), fmt.Sprintf(constants.USER_ALREADY_EXISTS, user[0].EmailId)).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.FAILED_CREATING_USER), fmt.Sprintf(constants.USER_ALREADY_EXISTS, user[0].EmailId)).Error(), err.Error())
 }
 
 func (suite *userServiceTestSuite) TestCreateUserReturnsErrorWhenEmailIdIsMissing() {
@@ -58,7 +59,7 @@ func (suite *userServiceTestSuite) TestCreateUserReturnsErrorWhenEmailIdIsMissin
 	userExists, err := suite.service.Add(user[0])
 	assert.Equal(suite.T(), entities.User{}, userExists)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.EMAIL_ID_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.EMAIL_ID_MANDATORY).Error(), err.Error())
 }
 
 func (suite *userServiceTestSuite) TestCreateUserReturnsErrorWhenPasswordIsMissing() {
@@ -73,7 +74,7 @@ func (suite *userServiceTestSuite) TestCreateUserReturnsErrorWhenPasswordIsMissi
 	userExists, err := suite.service.Add(user[0])
 	assert.Equal(suite.T(), entities.User{}, userExists)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.PASSWORD_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.PASSWORD_MANDATORY).Error(), err.Error())
 }
 
 func (suite *userServiceTestSuite) TestCreateUserReturnsErrorWhenFirstNameIsMissing() {
@@ -88,7 +89,7 @@ func (suite *userServiceTestSuite) TestCreateUserReturnsErrorWhenFirstNameIsMiss
 	userExists, err := suite.service.Add(user[0])
 	assert.Equal(suite.T(), entities.User{}, userExists)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.FIRST_NAME_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.FIRST_NAME_MANDATORY).Error(), err.Error())
 }
 
 func (suite *userServiceTestSuite) TestUserIsSuccessfullyCreated() {
@@ -120,7 +121,7 @@ func (suite *userServiceTestSuite) TestLoginWhenUserDoesNotExist() {
 	userExists, err := suite.service.Login(user[0])
 	assert.Equal(suite.T(), entities.User{}, userExists)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.USER_DO_NOT_EXIST), constants.USER_DOES_NOT_EXIST).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.USER_DO_NOT_EXIST), constants.USER_DOES_NOT_EXIST).Error(), err.Error())
 }
 
 func (suite *userServiceTestSuite) TestLoginIsSuccessful() {

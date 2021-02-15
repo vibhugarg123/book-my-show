@@ -11,6 +11,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/repository"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"testing"
 	"time"
 )
@@ -39,7 +40,7 @@ func (suite *movieServiceTestSuite) TestAddMovieReturnsErrorWhenMovieObjectIsMis
 	movieReturned, err := suite.service.Add(movie[0])
 	assert.Equal(suite.T(), entities.Movie{}, movieReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.EMPTY_REQUEST_BODY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.EMPTY_REQUEST_BODY).Error(), err.Error())
 }
 
 func (suite *movieServiceTestSuite) TestAddMovieReturnsErrorWhenMovieNameIsMissing() {
@@ -53,7 +54,7 @@ func (suite *movieServiceTestSuite) TestAddMovieReturnsErrorWhenMovieNameIsMissi
 	movieReturned, err := suite.service.Add(movie[0])
 	assert.Equal(suite.T(), entities.Movie{}, movieReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.MOVIE_NAME_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.MOVIE_NAME_MANDATORY).Error(), err.Error())
 }
 
 func (suite *movieServiceTestSuite) TestAddMovieReturnsErrorWhenMovieDirectorNameIsMissing() {
@@ -67,7 +68,7 @@ func (suite *movieServiceTestSuite) TestAddMovieReturnsErrorWhenMovieDirectorNam
 	movieReturned, err := suite.service.Add(movie[0])
 	assert.Equal(suite.T(), entities.Movie{}, movieReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.DIRECTOR_NAME_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.DIRECTOR_NAME_MANDATORY).Error(), err.Error())
 }
 
 func (suite *movieServiceTestSuite) TestAddMovieReturnsErrorWhenMovieReleaseDateIsMissing() {
@@ -81,7 +82,7 @@ func (suite *movieServiceTestSuite) TestAddMovieReturnsErrorWhenMovieReleaseDate
 	movieReturned, err := suite.service.Add(movie[0])
 	assert.Equal(suite.T(), entities.Movie{}, movieReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.RELEASE_DATE_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.RELEASE_DATE_MANDATORY).Error(), err.Error())
 }
 
 func (suite *movieServiceTestSuite) TestAddMovieReturnsErrorWhenMovieAlreadyExists() {
@@ -97,7 +98,7 @@ func (suite *movieServiceTestSuite) TestAddMovieReturnsErrorWhenMovieAlreadyExis
 	movieReturned, err := suite.service.Add(movie[0])
 	assert.Equal(suite.T(), entities.Movie{}, movieReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.MOVIE_CREATION_FAILED), fmt.Sprintf(constants.MOVIE_ALREADY_EXISTS, movie[0].Name)).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.MOVIE_CREATION_FAILED), fmt.Sprintf(constants.MOVIE_ALREADY_EXISTS, movie[0].Name)).Error(), err.Error())
 }
 
 func (suite *movieServiceTestSuite) TestAddMovieWhenMovieIsCreatedSuccessfully() {

@@ -32,7 +32,10 @@ func (amh *AddMovieHandler) ServeHTTP(writer http.ResponseWriter, request *http.
 	}
 	appcontext.Logger.Info().Msgf("request received to add new movie %v", movie)
 	movie, err = amh.service.Add(movie)
-	if err != nil {
+	if utils.IsValidationError(err) {
+		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.MOVIE_CREATION_FAILED, err.Error()})
+		return
+	} else if err != nil {
 		utils.CommonResponse(writer, request, http.StatusInternalServerError, domain.Error{constants.MOVIE_CREATION_FAILED, err.Error()})
 		return
 	}

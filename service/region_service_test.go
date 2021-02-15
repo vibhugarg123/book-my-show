@@ -10,6 +10,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/repository"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"testing"
 )
 
@@ -39,7 +40,7 @@ func (suite *regionServiceTestSuite) TestAddRegionReturnsErrorWhenRegionIdIsMiss
 	regionReturned, err := suite.service.Add(region[0])
 	assert.Equal(suite.T(), entities.Region{}, regionReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.REGION_ID_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.REGION_ID_MANDATORY).Error(), err.Error())
 }
 
 func (suite *regionServiceTestSuite) TestAddRegionReturnsErrorWhenRegionNameIsMissing() {
@@ -53,7 +54,7 @@ func (suite *regionServiceTestSuite) TestAddRegionReturnsErrorWhenRegionNameIsMi
 	regionReturned, err := suite.service.Add(region[0])
 	assert.Equal(suite.T(), entities.Region{}, regionReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.REGION_NAME_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.REGION_NAME_MANDATORY).Error(), err.Error())
 }
 
 func (suite *regionServiceTestSuite) TestAddRegionReturnsErrorWhenRegionTypeIsMissing() {
@@ -66,7 +67,7 @@ func (suite *regionServiceTestSuite) TestAddRegionReturnsErrorWhenRegionTypeIsMi
 	regionReturned, err := suite.service.Add(region[0])
 	assert.Equal(suite.T(), entities.Region{}, regionReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.REGION_TYPE_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.REGION_TYPE_MANDATORY).Error(), err.Error())
 }
 
 func (suite *regionServiceTestSuite) TestAddRegionReturnsErrorWhenRegionIdAlreadyExists() {

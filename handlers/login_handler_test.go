@@ -12,6 +12,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/service"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -69,13 +70,13 @@ func (suite *loginHandlerTestSuite) TestLoginUserDoesNotExist() {
 	requestBody := `{"email_id":"cbbc@ghuil.com","password":"helo@123"}`
 	request, err := http.NewRequest("POST", "/user", bytes.NewBuffer([]byte(requestBody)))
 	assert.Nil(suite.T(), err)
-	suite.userService.EXPECT().Login(gomock.Any()).Return(entities.User{}, errors.Wrap(errors.New(constants.USER_DO_NOT_EXIST), constants.USER_DOES_NOT_EXIST))
+	suite.userService.EXPECT().Login(gomock.Any()).Return(entities.User{}, utils.WrapValidationError(errors.New(constants.USER_DO_NOT_EXIST), constants.USER_DOES_NOT_EXIST))
 
 	response := httptest.NewRecorder()
 	handler := http.Handler(suite.loginHandler)
 	handler.ServeHTTP(response, request)
 
-	assert.Equal(suite.T(), http.StatusInternalServerError, response.Code)
+	assert.Equal(suite.T(), http.StatusBadRequest, response.Code)
 	assert.Equal(suite.T(), []byte(`{"error_code":"login_failed","error_message":"user does not exist: user_not_present"}`), bytes.TrimSpace(response.Body.Bytes()))
 }
 

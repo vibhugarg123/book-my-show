@@ -14,6 +14,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/service"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -82,13 +83,13 @@ func (suite *addHallHandlerTestSuite) TestAddHallHandlerWhenHallAlreadyExists() 
 			Int64: 7,
 		},
 	}
-	suite.hallService.EXPECT().Add(gomock.Any()).Return(entities.Hall{}, errors.Wrap(errors.New(constants.HALL_CREATION_FAILED), fmt.Sprintf(constants.HALL_ALREADY_EXISTS, expectedHall.Name, expectedHall.TheatreId.Int64)))
+	suite.hallService.EXPECT().Add(gomock.Any()).Return(entities.Hall{}, utils.WrapValidationError(errors.New(constants.HALL_CREATION_FAILED), fmt.Sprintf(constants.HALL_ALREADY_EXISTS, expectedHall.Name, expectedHall.TheatreId.Int64)))
 
 	response := httptest.NewRecorder()
 	handler := http.Handler(suite.addHallHandler)
 	handler.ServeHTTP(response, request)
 
-	assert.Equal(suite.T(), http.StatusInternalServerError, response.Code)
+	assert.Equal(suite.T(), http.StatusBadRequest, response.Code)
 	assert.Equal(suite.T(), []byte(`{"error_code":"hall_creation_failed","error_message":"hall with hall name- HALL_A \u0026 theatre-id 7 already exists: hall_creation_failed"}`), bytes.TrimSpace(response.Body.Bytes()))
 }
 

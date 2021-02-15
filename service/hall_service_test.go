@@ -12,6 +12,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/repository"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"testing"
 )
 
@@ -45,7 +46,7 @@ func (suite *hallServiceTestSuite) TestAddHallReturnsErrorWhenHallNameIsMissing(
 	hallReturned, err := suite.service.Add(hall[0])
 	assert.Equal(suite.T(), entities.Hall{}, hallReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.HALL_NAME_MANDATORY).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.HALL_NAME_MANDATORY).Error(), err.Error())
 }
 
 func (suite *hallServiceTestSuite) TestAddHallReturnsErrorWhenNumberOfSeatsAreMissing() {
@@ -61,7 +62,7 @@ func (suite *hallServiceTestSuite) TestAddHallReturnsErrorWhenNumberOfSeatsAreMi
 	hallReturned, err := suite.service.Add(hall[0])
 	assert.Equal(suite.T(), entities.Hall{}, hallReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.SEATS_NUMBER_INVALID).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.SEATS_NUMBER_INVALID).Error(), err.Error())
 }
 
 func (suite *hallServiceTestSuite) TestAddHallReturnsErrorWhenTheatreIdMissing() {
@@ -78,7 +79,7 @@ func (suite *hallServiceTestSuite) TestAddHallReturnsErrorWhenTheatreIdMissing()
 	hallReturned, err := suite.service.Add(hall[0])
 	assert.Equal(suite.T(), entities.Hall{}, hallReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.REQUEST_INVALID), constants.THEATRE_ID_HALL_CREATION_INVALID).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.REQUEST_INVALID), constants.THEATRE_ID_HALL_CREATION_INVALID).Error(), err.Error())
 }
 
 func (suite *hallServiceTestSuite) TestAddHallReturnsErrorWhenTheatreIdViolatesForeignKeyConstraint() {
@@ -115,7 +116,7 @@ func (suite *hallServiceTestSuite) TestAddHallReturnsErrorWhenHallAlreadyExist()
 	hallReturned, err := suite.service.Add(hall[0])
 	assert.Equal(suite.T(), entities.Hall{}, hallReturned)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), errors.Wrap(errors.New(constants.HALL_CREATION_FAILED), fmt.Sprintf(constants.HALL_ALREADY_EXISTS, hall[0].Name, hall[0].TheatreId.Int64)).Error(), err.Error())
+	assert.Equal(suite.T(), utils.WrapValidationError(errors.New(constants.HALL_CREATION_FAILED), fmt.Sprintf(constants.HALL_ALREADY_EXISTS, hall[0].Name, hall[0].TheatreId.Int64)).Error(), err.Error())
 }
 
 func (suite *hallServiceTestSuite) TestHallIsSuccessfullyCreated() {

@@ -32,7 +32,10 @@ func (arh *AddRegionHandler) ServeHTTP(writer http.ResponseWriter, request *http
 	}
 	appcontext.Logger.Info().Msgf("request received to add new region %v", region)
 	region, err = arh.service.Add(region)
-	if err != nil {
+	if utils.IsValidationError(err) {
+		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.REGION_CREATION_FAILED, err.Error()})
+		return
+	} else if err != nil {
 		utils.CommonResponse(writer, request, http.StatusInternalServerError, domain.Error{constants.REGION_CREATION_FAILED, err.Error()})
 		return
 	}

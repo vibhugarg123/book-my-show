@@ -24,7 +24,7 @@ type bookingService struct {
 }
 
 func (b bookingService) Add(booking entities.Booking) (entities.Booking, error) {
-	err := validation.AddNewBookingValidation(booking)
+	err := validation.CreateNewBookingValidator(booking)
 	if err != nil {
 		return entities.Booking{}, err
 	}

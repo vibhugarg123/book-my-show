@@ -32,7 +32,10 @@ func (lh *LoginHandler) ServeHTTP(writer http.ResponseWriter, request *http.Requ
 	}
 	appcontext.Logger.Info().Msgf("request received for login %v", user)
 	user, err = lh.service.Login(user)
-	if err != nil {
+	if utils.IsValidationError(err) {
+		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.LOGIN_FAILED, err.Error()})
+		return
+	} else if err != nil {
 		utils.CommonResponse(writer, request, http.StatusInternalServerError, domain.Error{constants.LOGIN_FAILED, err.Error()})
 		return
 	}
