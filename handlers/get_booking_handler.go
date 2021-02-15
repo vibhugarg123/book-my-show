@@ -37,7 +37,10 @@ func (gbh *GetBookingHandler) ServeHTTP(writer http.ResponseWriter, request *htt
 	}
 	appcontext.Logger.Info().Msg(fmt.Sprintf("booking to get for user-id %d", userIdInInteger))
 	bookings, err := gbh.service.GetBooking(userIdInInteger)
-	if err != nil {
+	if utils.IsValidationError(err) {
+		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.GET_BOOKINGS_BY_USER_ID_FAILED, err.Error()})
+		return
+	} else if err != nil {
 		utils.CommonResponse(writer, request, http.StatusInternalServerError, domain.Error{constants.GET_BOOKINGS_BY_USER_ID_FAILED, err.Error()})
 		return
 	}

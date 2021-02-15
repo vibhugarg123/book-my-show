@@ -80,13 +80,13 @@ func (b bookingService) GetBooking(userId int) ([]entities.Booking, error) {
 		appcontext.Logger.Error().
 			Str(constants.FAILED_FETCHING_RESULT_FROM_DATABASE, err.Error()).
 			Msg(constants.FAILED_GET_DB_CALL)
-		return []entities.Booking{}, errors.Wrap(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
+		return []entities.Booking{}, utils.WrapValidationError(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
 	}
 	if len(bookings) == 0 {
 		appcontext.Logger.Error().
 			Str(constants.BOOKING_DO_NOT_EXIST, fmt.Sprintf(constants.BOOKING_DO_NOT_EXIST_FOR_GIVEN_USER_ID, userId)).
 			Msg(fmt.Sprintf(constants.BOOKING_DO_NOT_EXIST_FOR_GIVEN_USER_ID, userId))
-		return []entities.Booking{}, errors.Wrap(errors.New(constants.BOOKING_DO_NOT_EXIST), fmt.Sprintf(constants.BOOKING_DO_NOT_EXIST_FOR_GIVEN_USER_ID, userId))
+		return []entities.Booking{}, utils.WrapValidationError(errors.New(constants.BOOKING_DO_NOT_EXIST), fmt.Sprintf(constants.BOOKING_DO_NOT_EXIST_FOR_GIVEN_USER_ID, userId))
 	}
 	return bookings, nil
 }
