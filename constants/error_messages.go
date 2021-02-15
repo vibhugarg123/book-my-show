@@ -54,4 +54,6 @@ const (
 	SHOW_DOES_NOT_EXIST_FOR_GIVEN_SHOW_ID           = "show does not exist for given show-id"
 	LESS_SEATS_AVAILABLE                            = "available seats %d, but requested seats are %d"
 	BOOKING_DO_NOT_EXIST_FOR_GIVEN_USER_ID          = "booking do not exist for user-id %d"
+	USER_ID_FOREIGN_KEY_VIOLATION_IN_CREATE_BOOKING = "[user-id - %d] in create booking request does not exist"
+	SHOW_ID_FOREIGN_KEY_VIOLATION_IN_CREATE_BOOKING = "[show-id - %d] in create booking request does not exist"
 )

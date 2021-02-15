@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/go-sql-driver/mysql"
 	"github.com/vibhugarg123/book-my-show/constants"
 	"net/http"
 	"os"
@@ -63,4 +64,13 @@ func ValidateIntegerType(value interface{}) error {
 		return errors.New(constants.NOT_VALID_INTEGER)
 	}
 	return nil
+}
+
+func SqlError(err error) error {
+	switch err.(*mysql.MySQLError).Number {
+	case 1452:
+		return errors.New(constants.FOREIGN_KEY_VIOLATION)
+	default:
+		return err
+	}
 }

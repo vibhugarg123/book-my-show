@@ -28,4 +28,5 @@ const (
 	SHOW_DOES_NOT_EXIT                         = "show_does_not_exist"
 	AVAILABLE_SEATS_LESS_COMPARED_TO_REQUESTED = "available_seats_less"
 	BOOKING_DO_NOT_EXIST                       = "bookings_do_not_exist"
+	FOREIGN_KEY_VIOLATION                      = "foreign_key_violation"
 )

@@ -37,5 +37,7 @@ func (b bookingRepository) InsertBooking(booking *entities.Booking) error {
 }
 
 func NewBookingRepository() BookingRepository {
-	return &bookingRepository{db: appcontext.MySqlConnection()}
+	return &bookingRepository{
+		db: appcontext.MySqlConnection(),
+	}
 }

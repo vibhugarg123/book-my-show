@@ -32,7 +32,10 @@ func (abh *AddBookingHandler) ServeHTTP(writer http.ResponseWriter, request *htt
 	}
 	appcontext.Logger.Info().Msgf("request received to create new booking %v", booking)
 	booking, err = abh.service.Add(booking)
-	if err != nil {
+	if utils.IsValidationError(err) {
+		utils.CommonResponse(writer, request, http.StatusBadRequest, domain.Error{constants.BOOKING_CREATION_FAILED, err.Error()})
+		return
+	} else if err != nil {
 		utils.CommonResponse(writer, request, http.StatusInternalServerError, domain.Error{constants.BOOKING_CREATION_FAILED, err.Error()})
 		return
 	}

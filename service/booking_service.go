@@ -7,7 +7,9 @@ import (
 	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/entities"
 	"github.com/vibhugarg123/book-my-show/repository"
+	"github.com/vibhugarg123/book-my-show/utils"
 	"github.com/vibhugarg123/book-my-show/validation"
+	"strings"
 )
 
 type BookingService interface {
@@ -31,31 +33,43 @@ func (b bookingService) Add(booking entities.Booking) (entities.Booking, error) 
 		appcontext.Logger.Error().
 			Str(constants.FAILED_GET_DB_CALL, err.Error()).
 			Msg(err.Error())
-		return entities.Booking{}, errors.Wrap(errors.New(constants.FAILED_GET_DB_CALL), err.Error())
+		return entities.Booking{}, utils.WrapValidationError(errors.New(constants.FAILED_GET_DB_CALL), err.Error())
 	}
 	if len(showReturned) == 0 {
 		appcontext.Logger.Error().
 			Str(constants.SHOW_DOES_NOT_EXIT, constants.SHOW_DOES_NOT_EXIST_FOR_GIVEN_SHOW_ID).
 			Msg(constants.SHOW_DOES_NOT_EXIST_FOR_GIVEN_SHOW_ID)
-		return entities.Booking{}, errors.Wrap(errors.New(constants.SHOW_DOES_NOT_EXIT), constants.SHOW_DOES_NOT_EXIST_FOR_GIVEN_SHOW_ID)
+		return entities.Booking{}, utils.WrapValidationError(errors.New(constants.SHOW_DOES_NOT_EXIT), constants.SHOW_DOES_NOT_EXIST_FOR_GIVEN_SHOW_ID)
 	}
 	if showReturned[0].AvailableSeats-booking.Seats < 0 {
 		appcontext.Logger.Error().
-			Str(constants.AVAILABLE_SEATS_LESS_COMPARED_TO_REQUESTED, fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, -booking.Seats)).
-			Msg(fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, -booking.Seats))
-		return entities.Booking{}, errors.Wrap(errors.New(constants.AVAILABLE_SEATS_LESS_COMPARED_TO_REQUESTED), fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, -booking.Seats))
+			Str(constants.AVAILABLE_SEATS_LESS_COMPARED_TO_REQUESTED, fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, booking.Seats)).
+			Msg(fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, booking.Seats))
+		return entities.Booking{}, utils.WrapValidationError(errors.New(constants.AVAILABLE_SEATS_LESS_COMPARED_TO_REQUESTED), fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, booking.Seats))
 	}
-	booking.TotalPrice = showReturned[0].SeatPrice * float64(booking.Seats)
-	availableSeats := showReturned[0].AvailableSeats - booking.Seats
-	booking.MovieId = int(showReturned[0].MovieId.Int64)
-	if err := b.showRepository.UpdateSeatsByShowId(availableSeats, booking.ShowId); err != nil {
+	err = repository.WithTransaction(appcontext.MySqlConnection().DB, func(tx repository.Transaction) error {
+		booking.TotalPrice = showReturned[0].SeatPrice * float64(booking.Seats)
+		availableSeats := showReturned[0].AvailableSeats - booking.Seats
+		booking.MovieId = int(showReturned[0].MovieId.Int64)
+		if err := b.showRepository.UpdateSeatsByShowId(availableSeats, booking.ShowId); err != nil {
+			return err
+		}
+		if err := b.bookingRepository.InsertBooking(&booking); err != nil {
+			appcontext.Logger.Error().
+				Str(constants.CREATE_BOOKING_FAILED, err.Error()).
+				Msg(err.Error())
+			if utils.SqlError(err).Error() == constants.FOREIGN_KEY_VIOLATION && strings.Contains(err.Error(), "fk_user_id") {
+				return utils.WrapValidationError(errors.New(constants.FOREIGN_KEY_VIOLATION), fmt.Sprintf(constants.USER_ID_FOREIGN_KEY_VIOLATION_IN_CREATE_BOOKING, booking.UserId))
+			}
+			if utils.SqlError(err).Error() == constants.FOREIGN_KEY_VIOLATION && strings.Contains(err.Error(), "fk_show_id") {
+				return utils.WrapValidationError(errors.New(constants.FOREIGN_KEY_VIOLATION), fmt.Sprintf(constants.SHOW_ID_FOREIGN_KEY_VIOLATION_IN_CREATE_BOOKING, booking.ShowId))
+			}
+			return errors.Wrap(errors.New(constants.CREATE_BOOKING_FAILED), err.Error())
+		}
+		return nil
+	})
+	if err != nil {
 		return entities.Booking{}, err
-	}
-	if err := b.bookingRepository.InsertBooking(&booking); err != nil {
-		appcontext.Logger.Error().
-			Str(constants.CREATE_BOOKING_FAILED, err.Error()).
-			Msg(err.Error())
-		return entities.Booking{}, errors.Wrap(errors.New(constants.CREATE_BOOKING_FAILED), err.Error())
 	}
 	return booking, nil
 }
