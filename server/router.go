@@ -15,6 +15,7 @@ func Router() http.Handler {
 	hallService := service.NewHallService()
 	movieService := service.NewMovieService()
 	showService := service.NewShowService()
+	bookingService := service.NewBookingService()
 	appcontext.Logger.Info().Msg("setting up routes for book my show application")
 	router := mux.NewRouter()
 	router.Handle("/user", handlers.NewAddUserHandler(userService)).Methods("POST")
@@ -28,5 +29,7 @@ func Router() http.Handler {
 	router.Handle("/movie", handlers.NewAddMovieHandler(movieService)).Methods("POST")
 	router.Handle("/movies", handlers.NewGetMoviesHandler(movieService)).Methods("GET")
 	router.Handle("/show", handlers.NewAddShowHandler(showService)).Methods("POST")
+	router.Handle("/booking", handlers.NewAddBookingHandler(bookingService)).Methods("POST")
+	router.Handle("/booking/{user-id}", handlers.NewGetBookingHandler(bookingService)).Methods("GET")
 	return router
 }

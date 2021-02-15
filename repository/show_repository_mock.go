@@ -61,3 +61,32 @@ func (mr *MockShowRepositoryMockRecorder) FetchShowByMovieIdHallIdShowDate(arg0 
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchShowByMovieIdHallIdShowDate", reflect.TypeOf((*MockShowRepository)(nil).FetchShowByMovieIdHallIdShowDate), arg0)
 }
+
+// FetchShowByShowId mocks base method
+func (m *MockShowRepository) FetchShowByShowId(arg0 int) ([]entities.Show, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FetchShowByShowId", arg0)
+	ret0, _ := ret[0].([]entities.Show)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FetchShowByShowId indicates an expected call of FetchShowByShowId
+func (mr *MockShowRepositoryMockRecorder) FetchShowByShowId(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchShowByShowId", reflect.TypeOf((*MockShowRepository)(nil).FetchShowByShowId), arg0)
+}
+
+// UpdateSeatsByShowId mocks base method
+func (m *MockShowRepository) UpdateSeatsByShowId(arg0, arg1 int) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateSeatsByShowId", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateSeatsByShowId indicates an expected call of UpdateSeatsByShowId
+func (mr *MockShowRepositoryMockRecorder) UpdateSeatsByShowId(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSeatsByShowId", reflect.TypeOf((*MockShowRepository)(nil).UpdateSeatsByShowId), arg0, arg1)
+}

@@ -10,6 +10,8 @@ import (
 type ShowRepository interface {
 	InsertShow(*entities.Show) error
 	FetchShowByMovieIdHallIdShowDate(entities.Show) ([]entities.Show, error)
+	FetchShowByShowId(int) ([]entities.Show, error)
+	UpdateSeatsByShowId(int, int) error
 }
 
 type showRepository struct {
@@ -64,6 +66,42 @@ func (s showRepository) FetchShowByMovieIdHallIdShowDate(show entities.Show) ([]
 		return []entities.Show{}, err
 	}
 	return showReturned, err
+}
+
+func (s showRepository) FetchShowByShowId(showId int) ([]entities.Show, error) {
+	var showReturned []entities.Show
+	query := `SELECT
+		s.id, 
+		s.movie_id, 
+		s.hall_id, 
+		s.show_date,
+			t.id "timing_id.id",
+			t.name "timing_id.name",
+			t.start_time "timing_id.start_time",
+			t.end_time "timing_id.end_time",
+            t.created_at "timing_id.created_at",
+            t.updated_at "timing_id.updated_at",
+		s.seat_price,
+		s.available_seats,
+		s.created_at,
+		s.updated_at
+	FROM shows s
+	JOIN timings t ON s.timing_id=t.id WHERE s.id=?`
+	err := s.db.Select(&showReturned, query, showId)
+	if err != nil {
+		return []entities.Show{}, err
+	}
+	return showReturned, err
+}
+
+func (s showRepository) UpdateSeatsByShowId(seats int, showId int) error {
+	query := `UPDATE shows SET available_seats=? WHERE id=?`
+	tx := s.db.MustBegin()
+	_, err := tx.Exec(query, seats, showId)
+	if err != nil {
+		return err
+	}
+	return tx.Commit()
 }
 
 func NewShowRepository() ShowRepository {
