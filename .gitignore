@@ -19,3 +19,6 @@
 # Go code-coverage files
 coverage.out.tmp
 coverage.out.*
+
+# Builds
+./out
