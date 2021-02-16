@@ -5,6 +5,9 @@ go 1.15
 require (
 	github.com/cockroachdb/cockroach-go v2.0.1+incompatible // indirect
 	github.com/getsentry/sentry-go v0.9.0 // indirect
+	github.com/go-openapi/errors v0.20.0 // indirect
+	github.com/go-openapi/runtime v0.19.26 // indirect
+	github.com/go-openapi/validate v0.20.2 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/gobuffalo/attrs v1.0.0 // indirect
 	github.com/gobuffalo/envy v1.9.0 // indirect
@@ -21,6 +24,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/jmoiron/sqlx v1.3.1
 	github.com/magiconair/properties v1.8.1
+	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.20.0
 	github.com/spf13/viper v1.7.1

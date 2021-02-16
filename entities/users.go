@@ -2,6 +2,8 @@ package entities
 
 import "time"
 
+// swagger:model
+// User defines the structure for a user in the application
 type User struct {
 	Id        int       `json:"id" db:"id"`
 	FirstName string    `json:"first_name" db:"first_name"`

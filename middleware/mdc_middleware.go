@@ -4,6 +4,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/urfave/negroni"
 	"github.com/vibhugarg123/book-my-show/appcontext"
+	"github.com/vibhugarg123/book-my-show/constants"
 	"github.com/vibhugarg123/book-my-show/utils"
 	"net/http"
 	"os"
@@ -11,6 +12,10 @@ import (
 
 func MDCMiddleware() negroni.HandlerFunc {
 	return negroni.HandlerFunc(func(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+		if r.URL.Path == "/ping" || constants.SwaggerUIPathRegexChecker(r.URL.Path) {
+			next(rw, r)
+			return
+		}
 		appcontext.Logger = zerolog.New(os.Stdout).
 			With().Timestamp().Logger().
 			With().Str("request-method", r.Method).Logger().

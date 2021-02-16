@@ -21,6 +21,15 @@ func NewAddUserHandler(userService service.UserService) *AddUserHandler {
 	}
 }
 
+// swagger:route POST /user user addUser
+// Adds a new user
+// parameters: addUser
+// Responses:
+//	200: userResponse
+//  404: errorResponse
+//  500: errorResponse
+
+// Adds a new user to the application
 func (auh *AddUserHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	var user entities.User
 	decoder := json.NewDecoder(request.Body)

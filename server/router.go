@@ -31,5 +31,6 @@ func Router() http.Handler {
 	router.Handle("/show", handlers.NewAddShowHandler(showService)).Methods("POST")
 	router.Handle("/booking", handlers.NewAddBookingHandler(bookingService)).Methods("POST")
 	router.Handle("/booking/userid/{user-id}", handlers.NewGetBookingHandler(bookingService)).Methods("GET")
+	router.PathPrefix("/swagger-ui/").Handler(http.StripPrefix("/swagger-ui/", http.FileServer(http.Dir("swagger-ui"))))
 	return router
 }

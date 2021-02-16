@@ -30,4 +30,11 @@ db-migrate-up:
 db-migrate-down:
 	migrate -path db/migration -database "mysql://root:ons_vg@tcp(127.0.0.1:3306)/BOOK_MY_SHOW" -verbose down
 
+# Swagger ###########
+check-swagger-install:
+	which swagger || brew tap go-swagger/go-swagger || brew install go-swagger
+
+generate-swagger: check-swagger-install
+	swagger generate spec -o swagger-ui/swagger.yaml --scan-models
+
 .PHONY: mysql db-create db-drop

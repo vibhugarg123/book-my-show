@@ -1,0 +1,104 @@
+basePath: /
+consumes:
+- application/json
+definitions:
+  Error:
+    properties:
+      error_code:
+        type: string
+        x-go-name: ErrorCode
+      error_message:
+        type: string
+        x-go-name: ErrorMessage
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/domain
+  User:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      email_id:
+        type: string
+        x-go-name: EmailId
+      first_name:
+        type: string
+        x-go-name: FirstName
+      id:
+        format: int64
+        type: integer
+        x-go-name: Id
+      last_name:
+        type: string
+        x-go-name: LastName
+      password:
+        type: string
+        x-go-name: Password
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/entities
+  addUser:
+    properties:
+      email_id:
+        type: string
+        x-go-name: EmailId
+      first_name:
+        type: string
+        x-go-name: FirstName
+      last_name:
+        type: string
+        x-go-name: LastName
+      password:
+        type: string
+        x-go-name: Password
+    required:
+    - first_name
+    - last_name
+    - email_id
+    - password
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui
+host: localhost:8089
+info:
+  contact:
+    email: vibhu.garg@gojek.com
+    name: Vibhu Garg
+  description: Documentation for Book My Show API
+  title: Documentation for Book My Show API
+  version: 1.0.0
+paths:
+  /user:
+    post:
+      description: Adds a new user
+      operationId: addUser
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/addUser'
+      responses:
+        "200":
+          $ref: '#/responses/userResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - user
+produces:
+- application/json
+responses:
+  errorResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/Error'
+  userResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/User'
+schemes:
+- http
+swagger: "2.0"
