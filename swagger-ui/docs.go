@@ -40,20 +40,8 @@ type userResponseWrapper struct {
 	Body entities.User
 }
 
-//swagger:model
-type addUser struct {
-	// required: true
-	FirstName string `json:"first_name"`
-	// required: true
-	LastName string `json:"last_name"`
-	// required: true
-	EmailId string `json:"email_id"`
-	// required: true
-	Password string `json:"password"`
-}
-
 // swagger:parameters addUser
 type addUserResponseWrapper struct {
 	// in: body
-	Body addUser
+	Body entities.User
 }
