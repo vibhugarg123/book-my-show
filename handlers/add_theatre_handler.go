@@ -21,6 +21,14 @@ func NewAddTheatreHandler(theatreService service.TheatreService) *AddTheatreHand
 	}
 }
 
+// swagger:route POST /theatre theatre addTheatreRequest
+// Adds a new theatre
+// parameters: addTheatreRequest
+// Responses:
+//	200: addTheatreResponse
+//  404: errorResponse
+//  500: errorResponse
+
 func (ath *AddTheatreHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	var theatre entities.Theatre
 	decoder := json.NewDecoder(request.Body)

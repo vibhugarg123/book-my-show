@@ -19,7 +19,8 @@ package swagger_ui
 
 import (
 	"github.com/vibhugarg123/book-my-show/domain"
-	"github.com/vibhugarg123/book-my-show/entities"
+	"github.com/vibhugarg123/book-my-show/swagger-ui/request"
+	"github.com/vibhugarg123/book-my-show/swagger-ui/response"
 )
 
 //
@@ -34,14 +35,98 @@ type errorResponseWrapper struct {
 	Body domain.Error
 }
 
-// swagger:response userResponse
-type userResponseWrapper struct {
+// swagger:parameters addUserRequest
+type addUserRequestWrapper struct {
 	// in: body
-	Body entities.User
+	Body request.AddUser
 }
 
-// swagger:parameters addUser
-type addUserResponseWrapper struct {
+// swagger:response addUserResponse
+type userResponseWrapper struct {
 	// in: body
-	Body entities.User
+	Body response.AddUserResponse
+}
+
+// swagger:parameters addRegionRequest
+type addRegionRequestWrapper struct {
+	// in: body
+	Body request.AddRegion
+}
+
+// swagger:response addRegionResponse
+type addRegionResponseWrapper struct {
+	// in: body
+	Body response.AddRegionResponse
+}
+
+// swagger:parameters addTheatreRequest
+type addTheatreRequestWrapper struct {
+	// in: body
+	Body request.AddTheatre
+}
+
+// swagger:response addTheatreResponse
+type addTheatreResponseWrapper struct {
+	// in: body
+	Body response.AddTheatreResponse
+}
+
+// swagger:parameters addHallRequest
+type addHallRequestWrapper struct {
+	// in: body
+	Body request.AddHall
+}
+
+// swagger:response addHallResponse
+type addHallResponseWrapper struct {
+	// in: body
+	Body response.AddHallResponse
+}
+
+// swagger:parameters addMovieRequest
+type addMovieRequestWrapper struct {
+	// in: body
+	Body request.AddMovie
+}
+
+// swagger:response addMovieResponse
+type addMovieResponseWrapper struct {
+	// in: body
+	Body response.AddMovieResponse
+}
+
+// swagger:parameters addShowRequest
+type addShowRequestWrapper struct {
+	// in: body
+	Body request.AddShow
+}
+
+// swagger:response addShowResponse
+type addShowResponseWrapper struct {
+	// in: body
+	Body response.AddShowResponse
+}
+
+// swagger:parameters addBookingRequest
+type addBookingRequestWrapper struct {
+	// in: body
+	Body request.AddBooking
+}
+
+// swagger:response addBookingResponse
+type addBookingResponseWrapper struct {
+	// in: body
+	Body response.AddBookingResponse
+}
+
+// swagger:parameters loginRequest
+type loginRequestWrapper struct {
+	// in: body
+	Body request.LoginRequest
+}
+
+// swagger:response loginResponse
+type loginResponseWrapper struct {
+	// in: body
+	Body response.LoginResponse
 }

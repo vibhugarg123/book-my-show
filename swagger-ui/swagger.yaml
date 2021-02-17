@@ -2,17 +2,277 @@ basePath: /
 consumes:
 - application/json
 definitions:
-  Error:
+  AddBooking:
     properties:
-      error_code:
-        type: string
-        x-go-name: ErrorCode
-      error_message:
-        type: string
-        x-go-name: ErrorMessage
+      seats:
+        format: int64
+        type: integer
+        x-go-name: Seats
+      show_id:
+        format: int64
+        type: integer
+        x-go-name: ShowId
+      user_id:
+        format: int64
+        type: integer
+        x-go-name: UserId
     type: object
-    x-go-package: github.com/vibhugarg123/book-my-show/domain
-  User:
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/request
+  AddBookingResponse:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      id:
+        format: int64
+        type: integer
+        x-go-name: Id
+      movie_id:
+        format: int64
+        type: integer
+        x-go-name: MovieId
+      seats:
+        format: int64
+        type: integer
+        x-go-name: Seats
+      show_id:
+        format: int64
+        type: integer
+        x-go-name: ShowId
+      total_price:
+        format: double
+        type: number
+        x-go-name: TotalPrice
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+      user_id:
+        format: int64
+        type: integer
+        x-go-name: UserId
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/response
+  AddHall:
+    properties:
+      name:
+        type: string
+        x-go-name: Name
+      seats:
+        format: int64
+        type: integer
+        x-go-name: Seats
+      theatre_id:
+        $ref: '#/definitions/NullInt64'
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/request
+  AddHallResponse:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      id:
+        format: int64
+        type: integer
+        x-go-name: Id
+      name:
+        type: string
+        x-go-name: Name
+      seats:
+        format: int64
+        type: integer
+        x-go-name: Seats
+      theatre_id:
+        $ref: '#/definitions/NullInt64'
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/response
+  AddMovie:
+    properties:
+      director_name:
+        type: string
+        x-go-name: DirectorName
+      is_active:
+        type: boolean
+        x-go-name: IsActive
+      name:
+        type: string
+        x-go-name: Name
+      release_date:
+        format: date-time
+        type: string
+        x-go-name: ReleaseDate
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/request
+  AddMovieResponse:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      director_name:
+        type: string
+        x-go-name: DirectorName
+      id:
+        format: int64
+        type: integer
+        x-go-name: Id
+      is_active:
+        type: boolean
+        x-go-name: IsActive
+      name:
+        type: string
+        x-go-name: Name
+      release_date:
+        format: date-time
+        type: string
+        x-go-name: ReleaseDate
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/response
+  AddRegion:
+    properties:
+      id:
+        format: int64
+        type: integer
+        x-go-name: Id
+      name:
+        type: string
+        x-go-name: Name
+      parent_id:
+        $ref: '#/definitions/NullInt64'
+      region_type:
+        format: int64
+        type: integer
+        x-go-name: RegionType
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/request
+  AddRegionResponse:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      id:
+        format: int64
+        type: integer
+        x-go-name: Id
+      name:
+        type: string
+        x-go-name: Name
+      parent_id:
+        $ref: '#/definitions/NullInt64'
+      region_type:
+        format: int64
+        type: integer
+        x-go-name: RegionType
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/response
+  AddShow:
+    properties:
+      available_seats:
+        format: int64
+        type: integer
+        x-go-name: AvailableSeats
+      hall_id:
+        $ref: '#/definitions/NullInt64'
+      movie_id:
+        $ref: '#/definitions/NullInt64'
+      seat_price:
+        format: double
+        type: number
+        x-go-name: SeatPrice
+      show_date:
+        format: date-time
+        type: string
+        x-go-name: ShowDate
+      timing_id:
+        $ref: '#/definitions/timingRequest'
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/request
+  AddShowResponse:
+    properties:
+      available_seats:
+        format: int64
+        type: integer
+        x-go-name: AvailableSeats
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      hall_id:
+        $ref: '#/definitions/NullInt64'
+      id:
+        format: int64
+        type: integer
+        x-go-name: Id
+      movie_id:
+        $ref: '#/definitions/NullInt64'
+      seat_price:
+        format: double
+        type: number
+        x-go-name: SeatPrice
+      show_date:
+        format: date-time
+        type: string
+        x-go-name: ShowDate
+      timing_id:
+        $ref: '#/definitions/timingResponse'
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/response
+  AddTheatre:
+    properties:
+      address:
+        type: string
+        x-go-name: Address
+      name:
+        type: string
+        x-go-name: Name
+      region_id:
+        $ref: '#/definitions/NullInt64'
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/request
+  AddTheatreResponse:
+    properties:
+      address:
+        type: string
+        x-go-name: Address
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      id:
+        format: int64
+        type: integer
+        x-go-name: Id
+      name:
+        type: string
+        x-go-name: Name
+      region_id:
+        $ref: '#/definitions/NullInt64'
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/response
+  AddUser:
     properties:
       email_id:
         type: string
@@ -27,7 +287,141 @@ definitions:
         type: string
         x-go-name: Password
     type: object
-    x-go-package: github.com/vibhugarg123/book-my-show/entities
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/request
+  AddUserResponse:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      email_id:
+        type: string
+        x-go-name: EmailId
+      first_name:
+        type: string
+        x-go-name: FirstName
+      id:
+        format: int64
+        type: integer
+        x-go-name: Id
+      last_name:
+        type: string
+        x-go-name: LastName
+      password:
+        type: string
+        x-go-name: Password
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/response
+  Error:
+    properties:
+      error_code:
+        type: string
+        x-go-name: ErrorCode
+      error_message:
+        type: string
+        x-go-name: ErrorMessage
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/domain
+  LoginRequest:
+    properties:
+      email_id:
+        type: string
+        x-go-name: EmailId
+      password:
+        type: string
+        x-go-name: Password
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/request
+  LoginResponse:
+    properties:
+      login_status:
+        type: string
+        x-go-name: LoginStatus
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/response
+  NewBooking:
+    properties:
+      movie_id:
+        format: int64
+        type: integer
+        x-go-name: MovieId
+      seats:
+        format: int64
+        type: integer
+        x-go-name: Seats
+      show_id:
+        format: int64
+        type: integer
+        x-go-name: ShowId
+      total_price:
+        format: double
+        type: number
+        x-go-name: TotalPrice
+      user_id:
+        format: int64
+        type: integer
+        x-go-name: UserId
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/request
+  NullInt64:
+    description: |-
+      NullInt64 implements the Scanner interface so
+      it can be used as a scan destination, similar to NullString.
+    properties:
+      Int64:
+        format: int64
+        type: integer
+      Valid:
+        type: boolean
+    title: NullInt64 represents an int64 that may be null.
+    type: object
+    x-go-package: database/sql
+  timingRequest:
+    properties:
+      end_time:
+        format: date-time
+        type: string
+        x-go-name: EndTime
+      name:
+        type: string
+        x-go-name: Name
+      start_time:
+        format: date-time
+        type: string
+        x-go-name: StartTime
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/request
+  timingResponse:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      end_time:
+        format: date-time
+        type: string
+        x-go-name: EndTime
+      id:
+        format: int64
+        type: integer
+        x-go-name: Id
+      name:
+        type: string
+        x-go-name: Name
+      start_time:
+        format: date-time
+        type: string
+        x-go-name: StartTime
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+    type: object
+    x-go-package: github.com/vibhugarg123/book-my-show/swagger-ui/response
 host: localhost:8089
 info:
   contact:
@@ -37,18 +431,73 @@ info:
   title: Documentation for Book My Show API
   version: 1.0.0
 paths:
-  /user:
+  /login:
     post:
-      description: Adds a new user
-      operationId: addUser
+      description: Authenticates an existing user with email-id and password
+      operationId: loginRequest
       parameters:
       - in: body
         name: Body
         schema:
-          $ref: '#/definitions/User'
+          $ref: '#/definitions/LoginRequest'
       responses:
         "200":
-          $ref: '#/responses/userResponse'
+          $ref: '#/responses/loginResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - login
+  /region:
+    post:
+      description: Creates a new region with given id, name , region_type [1 for Country,
+        2 for State, 3 for District, 4 Town, 5 Village] and respective-parent id
+      operationId: addRegionRequest
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/AddRegion'
+      responses:
+        "200":
+          $ref: '#/responses/addRegionResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - region
+  /theatre:
+    post:
+      description: Adds a new theatre
+      operationId: addTheatreRequest
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/AddTheatre'
+      responses:
+        "200":
+          $ref: '#/responses/addTheatreResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - theatre
+  /user:
+    post:
+      description: Adds a new user
+      operationId: addUserRequest
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/AddUser'
+      responses:
+        "200":
+          $ref: '#/responses/addUserResponse'
         "404":
           $ref: '#/responses/errorResponse'
         "500":
@@ -58,14 +507,42 @@ paths:
 produces:
 - application/json
 responses:
+  addBookingResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/AddBookingResponse'
+  addHallResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/AddHallResponse'
+  addMovieResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/AddMovieResponse'
+  addRegionResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/AddRegionResponse'
+  addShowResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/AddShowResponse'
+  addTheatreResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/AddTheatreResponse'
+  addUserResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/AddUserResponse'
   errorResponse:
     description: ""
     schema:
       $ref: '#/definitions/Error'
-  userResponse:
+  loginResponse:
     description: ""
     schema:
-      $ref: '#/definitions/User'
+      $ref: '#/definitions/LoginResponse'
 schemes:
 - http
 swagger: "2.0"

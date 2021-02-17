@@ -21,6 +21,14 @@ func NewAddRegionHandler(regionService service.RegionService) *AddRegionHandler 
 	}
 }
 
+// swagger:route POST /region region addRegionRequest
+// Creates a new region with given id, name , region_type [1 for Country, 2 for State, 3 for District, 4 Town, 5 Village] and respective-parent id
+// parameters: addRegionRequest
+// Responses:
+//	200: addRegionResponse
+//  404: errorResponse
+//  500: errorResponse
+
 func (arh *AddRegionHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	var region entities.Region
 	decoder := json.NewDecoder(request.Body)

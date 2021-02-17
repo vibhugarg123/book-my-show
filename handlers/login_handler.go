@@ -21,6 +21,14 @@ func NewLoginHandler(userService service.UserService) *LoginHandler {
 	}
 }
 
+// swagger:route POST /login login loginRequest
+// Authenticates an existing user with email-id and password
+// parameters: loginRequest
+// Responses:
+//	200: loginResponse
+//  404: errorResponse
+//  500: errorResponse
+
 func (lh *LoginHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	var user entities.User
 	decoder := json.NewDecoder(request.Body)
