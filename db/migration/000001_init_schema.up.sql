@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_at` DATETIME NOT NULL,
   `updated_at` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `email_id_UNIQUE` (`email_id` ASC) VISIBLE
+  UNIQUE INDEX `email_id_UNIQUE` (`email_id` ASC)
 );
 
 CREATE TABLE IF NOT EXISTS `timings` (

@@ -21,7 +21,7 @@ type hallService struct {
 }
 
 func (h hallService) Add(hall entities.Hall) (entities.Hall, error) {
-	err := validation.CreateNewHallValidator(hall)
+	err := validation.ValidateForNewHall(hall)
 	if err != nil {
 		return entities.Hall{}, err
 	}

@@ -8,7 +8,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/utils"
 )
 
-func CreateNewRegionValidator(region entities.Region) error {
+func ValidateForNewRegion(region entities.Region) error {
 	if region == (entities.Region{}) {
 		appcontext.Logger.Error().
 			Str(constants.REQUEST_INVALID, constants.EMPTY_REQUEST_BODY).

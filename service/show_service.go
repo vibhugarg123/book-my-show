@@ -21,7 +21,7 @@ type showService struct {
 }
 
 func (s showService) Add(show entities.Show) (entities.Show, error) {
-	err := validation.CreateNewShowValidator(show)
+	err := validation.ValidateForNewShow(show)
 	if err != nil {
 		return entities.Show{}, err
 	}

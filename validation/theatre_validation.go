@@ -8,7 +8,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/utils"
 )
 
-func CreateNewTheatreValidator(theatre entities.Theatre) error {
+func ValidateForNewTheatre(theatre entities.Theatre) error {
 	if theatre == (entities.Theatre{}) {
 		appcontext.Logger.Error().
 			Str(constants.REQUEST_INVALID, constants.EMPTY_REQUEST_BODY).

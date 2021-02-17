@@ -8,7 +8,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/utils"
 )
 
-func CreateNewHallValidator(hall entities.Hall) error {
+func ValidateForNewHall(hall entities.Hall) error {
 	if hall == (entities.Hall{}) {
 		appcontext.Logger.Error().
 			Str(constants.REQUEST_INVALID, constants.EMPTY_REQUEST_BODY).

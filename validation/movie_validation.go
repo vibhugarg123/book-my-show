@@ -8,7 +8,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/utils"
 )
 
-func CreateNewMovieValidator(movie entities.Movie) error {
+func ValidateForNewMovie(movie entities.Movie) error {
 	if movie == (entities.Movie{}) {
 		appcontext.Logger.Error().
 			Str(constants.REQUEST_INVALID, constants.EMPTY_REQUEST_BODY).

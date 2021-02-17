@@ -24,7 +24,7 @@ type bookingService struct {
 }
 
 func (b bookingService) Add(booking entities.Booking) (entities.Booking, error) {
-	err := validation.CreateNewBookingValidator(booking)
+	err := validation.ValidateForNewBooking(booking)
 	if err != nil {
 		return entities.Booking{}, err
 	}
@@ -47,29 +47,23 @@ func (b bookingService) Add(booking entities.Booking) (entities.Booking, error) 
 			Msg(fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, booking.Seats))
 		return entities.Booking{}, utils.WrapValidationError(errors.New(constants.AVAILABLE_SEATS_LESS_COMPARED_TO_REQUESTED), fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, booking.Seats))
 	}
-	err = repository.WithTransaction(appcontext.MySqlConnection().DB, func(tx repository.Transaction) error {
-		booking.TotalPrice = showReturned[0].SeatPrice * float64(booking.Seats)
-		availableSeats := showReturned[0].AvailableSeats - booking.Seats
-		booking.MovieId = int(showReturned[0].MovieId.Int64)
-		if err := b.showRepository.UpdateSeatsByShowId(availableSeats, booking.ShowId); err != nil {
-			return err
-		}
-		if err := b.bookingRepository.InsertBooking(&booking); err != nil {
-			appcontext.Logger.Error().
-				Str(constants.CREATE_BOOKING_FAILED, err.Error()).
-				Msg(err.Error())
-			if utils.SqlError(err).Error() == constants.FOREIGN_KEY_VIOLATION && strings.Contains(err.Error(), "fk_user_id") {
-				return utils.WrapValidationError(errors.New(constants.FOREIGN_KEY_VIOLATION), fmt.Sprintf(constants.USER_ID_FOREIGN_KEY_VIOLATION_IN_CREATE_BOOKING, booking.UserId))
-			}
-			if utils.SqlError(err).Error() == constants.FOREIGN_KEY_VIOLATION && strings.Contains(err.Error(), "fk_show_id") {
-				return utils.WrapValidationError(errors.New(constants.FOREIGN_KEY_VIOLATION), fmt.Sprintf(constants.SHOW_ID_FOREIGN_KEY_VIOLATION_IN_CREATE_BOOKING, booking.ShowId))
-			}
-			return errors.Wrap(errors.New(constants.CREATE_BOOKING_FAILED), err.Error())
-		}
-		return nil
-	})
-	if err != nil {
+	booking.TotalPrice = showReturned[0].SeatPrice * float64(booking.Seats)
+	availableSeats := showReturned[0].AvailableSeats - booking.Seats
+	booking.MovieId = int(showReturned[0].MovieId.Int64)
+	if err := b.showRepository.UpdateSeatsByShowId(availableSeats, booking.ShowId); err != nil {
 		return entities.Booking{}, err
+	}
+	if err := b.bookingRepository.InsertBooking(&booking); err != nil {
+		appcontext.Logger.Error().
+			Str(constants.CREATE_BOOKING_FAILED, err.Error()).
+			Msg(err.Error())
+		if utils.SqlError(err).Error() == constants.FOREIGN_KEY_VIOLATION && strings.Contains(err.Error(), "fk_user_id") {
+			return entities.Booking{}, utils.WrapValidationError(errors.New(constants.FOREIGN_KEY_VIOLATION), fmt.Sprintf(constants.USER_ID_FOREIGN_KEY_VIOLATION_IN_CREATE_BOOKING, booking.UserId))
+		}
+		if utils.SqlError(err).Error() == constants.FOREIGN_KEY_VIOLATION && strings.Contains(err.Error(), "fk_show_id") {
+			return entities.Booking{}, utils.WrapValidationError(errors.New(constants.FOREIGN_KEY_VIOLATION), fmt.Sprintf(constants.SHOW_ID_FOREIGN_KEY_VIOLATION_IN_CREATE_BOOKING, booking.ShowId))
+		}
+		return entities.Booking{}, errors.Wrap(errors.New(constants.CREATE_BOOKING_FAILED), err.Error())
 	}
 	return booking, nil
 }

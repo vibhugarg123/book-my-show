@@ -27,7 +27,7 @@ func NewUserService() UserService {
 }
 
 func (u userService) Add(user entities.User) (entities.User, error) {
-	err := validation.CeateNewUserValidator(user)
+	err := validation.ValidateForNewUser(user)
 	if err != nil {
 		return entities.User{}, err
 	}
@@ -55,7 +55,7 @@ func (u userService) Add(user entities.User) (entities.User, error) {
 }
 
 func (u userService) Login(user entities.User) (entities.User, error) {
-	err := validation.LoginRequestValidation(user)
+	err := validation.ValidateForLogin(user)
 	if err != nil {
 		return entities.User{}, err
 	}

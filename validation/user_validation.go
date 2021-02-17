@@ -8,7 +8,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/utils"
 )
 
-func CeateNewUserValidator(user entities.User) error {
+func ValidateForNewUser(user entities.User) error {
 	if user == (entities.User{}) {
 		appcontext.Logger.Error().
 			Str(constants.REQUEST_INVALID, constants.EMPTY_REQUEST_BODY).
@@ -36,7 +36,7 @@ func CeateNewUserValidator(user entities.User) error {
 	return nil
 }
 
-func LoginRequestValidation(user entities.User) error {
+func ValidateForLogin(user entities.User) error {
 	if user == (entities.User{}) {
 		appcontext.Logger.Error().
 			Str(constants.REQUEST_INVALID, constants.EMPTY_REQUEST_BODY).

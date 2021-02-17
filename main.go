@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/urfave/cli/v2"
 	"github.com/vibhugarg123/book-my-show/appcontext"
 	"github.com/vibhugarg123/book-my-show/config"

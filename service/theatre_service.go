@@ -23,7 +23,7 @@ type theatreService struct {
 }
 
 func (t theatreService) Add(theatre entities.Theatre) (entities.Theatre, error) {
-	err := validation.CreateNewTheatreValidator(theatre)
+	err := validation.ValidateForNewTheatre(theatre)
 	if err != nil {
 		return entities.Theatre{}, err
 	}

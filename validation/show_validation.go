@@ -8,7 +8,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/utils"
 )
 
-func CreateNewShowValidator(show entities.Show) error {
+func ValidateForNewShow(show entities.Show) error {
 	if show == (entities.Show{}) {
 		appcontext.Logger.Error().
 			Str(constants.REQUEST_INVALID, constants.EMPTY_REQUEST_BODY).

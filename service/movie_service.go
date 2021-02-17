@@ -21,7 +21,7 @@ type movieService struct {
 }
 
 func (m movieService) Add(movie entities.Movie) (entities.Movie, error) {
-	err := validation.CreateNewMovieValidator(movie)
+	err := validation.ValidateForNewMovie(movie)
 	if err != nil {
 		return entities.Movie{}, err
 	}

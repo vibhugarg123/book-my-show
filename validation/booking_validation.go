@@ -8,7 +8,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/utils"
 )
 
-func CreateNewBookingValidator(booking entities.Booking) error {
+func ValidateForNewBooking(booking entities.Booking) error {
 	if booking == (entities.Booking{}) {
 		appcontext.Logger.Error().
 			Str(constants.REQUEST_INVALID, constants.EMPTY_REQUEST_BODY).

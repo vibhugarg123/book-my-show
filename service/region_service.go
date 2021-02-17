@@ -21,7 +21,7 @@ type regionService struct {
 }
 
 func (r regionService) Add(region entities.Region) (entities.Region, error) {
-	err := validation.CreateNewRegionValidator(region)
+	err := validation.ValidateForNewRegion(region)
 	if err != nil {
 		return entities.Region{}, err
 	}
