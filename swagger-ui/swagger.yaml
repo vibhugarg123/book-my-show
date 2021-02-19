@@ -558,6 +558,24 @@ paths:
           $ref: '#/responses/errorResponse'
       tags:
       - theatre
+  /theatre/{theatre-name}:
+    get:
+      description: Get all the theatres with theatre-name
+      operationId: theatre
+      parameters:
+      - in: path
+        name: theatre-name
+        required: true
+        schema:
+          type: string
+        type: string
+      responses:
+        "200":
+          $ref: '#/responses/theatresByNameResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
   /user:
     post:
       description: Adds a new user
@@ -615,6 +633,12 @@ responses:
     description: ""
     schema:
       $ref: '#/definitions/LoginResponse'
+  theatresByNameResponse:
+    description: ""
+    schema:
+      items:
+        $ref: '#/definitions/AddTheatreResponse'
+      type: array
 schemes:
 - http
 swagger: "2.0"

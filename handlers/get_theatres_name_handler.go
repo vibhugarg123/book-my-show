@@ -20,6 +20,17 @@ func NewGetTheatreByNameHandler(theatreService service.TheatreService) *GetTheat
 	}
 }
 
+// GetTheatresByNameRequest swagger:route GET /theatre/{theatre-name} theatre
+// Get all the theatres with theatre-name
+// Parameters:
+//  + name: theatre-name
+//    type: string
+//    in: path
+//    required: true
+// Responses:
+//	200: theatresByNameResponse
+//  404: errorResponse
+//  500: errorResponse
 func (ngt *GetTheatreByNameHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	theatreName := vars["theatre-name"]

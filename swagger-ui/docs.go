@@ -130,3 +130,9 @@ type loginResponseWrapper struct {
 	// in: body
 	Body response.LoginResponse
 }
+
+// swagger:response theatresByNameResponse
+type theatresByNameResponseWrapper struct {
+	// in: body
+	Body []response.AddTheatreResponse
+}
