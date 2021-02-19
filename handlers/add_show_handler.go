@@ -21,6 +21,13 @@ func NewAddShowHandler(showService service.ShowService) *AddShowHandler {
 	}
 }
 
+// swagger:route POST /show show addShowRequest
+// Adds a new show to a hall in a theatre
+// parameters: addShowRequest
+// Responses:
+//	200: addShowResponse
+//  404: errorResponse
+//  500: errorResponse
 func (ash *AddShowHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	var show entities.Show
 	decoder := json.NewDecoder(request.Body)

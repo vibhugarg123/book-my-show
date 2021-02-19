@@ -431,6 +431,42 @@ info:
   title: Documentation for Book My Show API
   version: 1.0.0
 paths:
+  /booking:
+    post:
+      description: User creates a new booking
+      operationId: addBookingRequest
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/AddBooking'
+      responses:
+        "200":
+          $ref: '#/responses/addBookingResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - booking
+  /hall:
+    post:
+      description: Adds a new hall to a theatre
+      operationId: addHallRequest
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/AddHall'
+      responses:
+        "200":
+          $ref: '#/responses/addHallResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - hall
   /login:
     post:
       description: Authenticates an existing user with email-id and password
@@ -449,6 +485,24 @@ paths:
           $ref: '#/responses/errorResponse'
       tags:
       - login
+  /movie:
+    post:
+      description: Adds a new movie to the list of movies in the database
+      operationId: addMovieRequest
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/AddMovie'
+      responses:
+        "200":
+          $ref: '#/responses/addMovieResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - movie
   /region:
     post:
       description: Creates a new region with given id, name , region_type [1 for Country,
@@ -468,6 +522,24 @@ paths:
           $ref: '#/responses/errorResponse'
       tags:
       - region
+  /show:
+    post:
+      description: Adds a new show to a hall in a theatre
+      operationId: addShowRequest
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/AddShow'
+      responses:
+        "200":
+          $ref: '#/responses/addShowResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - show
   /theatre:
     post:
       description: Adds a new theatre

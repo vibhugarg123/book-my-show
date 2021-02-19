@@ -21,6 +21,13 @@ func NewAddHallHandler(hallService service.HallService) *AddHallHandler {
 	}
 }
 
+// swagger:route POST /hall hall addHallRequest
+// Adds a new hall to a theatre
+// parameters: addHallRequest
+// Responses:
+//	200: addHallResponse
+//  404: errorResponse
+//  500: errorResponse
 func (ahh *AddHallHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	var hall entities.Hall
 	decoder := json.NewDecoder(request.Body)

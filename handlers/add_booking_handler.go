@@ -21,6 +21,13 @@ func NewAddBookingHandler(bookingService service.BookingService) *AddBookingHand
 	}
 }
 
+// swagger:route POST /booking booking addBookingRequest
+// User creates a new booking
+// parameters: addBookingRequest
+// Responses:
+//	200: addBookingResponse
+//  404: errorResponse
+//  500: errorResponse
 func (abh *AddBookingHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	var booking entities.Booking
 	decoder := json.NewDecoder(request.Body)

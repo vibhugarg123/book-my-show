@@ -21,6 +21,13 @@ func NewAddMovieHandler(movieService service.MovieService) *AddMovieHandler {
 	}
 }
 
+// swagger:route POST /movie movie addMovieRequest
+// Adds a new movie to the list of movies in the database
+// parameters: addMovieRequest
+// Responses:
+//	200: addMovieResponse
+//  404: errorResponse
+//  500: errorResponse
 func (amh *AddMovieHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	var movie entities.Movie
 	decoder := json.NewDecoder(request.Body)
