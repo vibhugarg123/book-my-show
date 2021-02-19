@@ -28,29 +28,11 @@ func (b bookingService) Add(booking entities.Booking) (entities.Booking, error) 
 	if err != nil {
 		return entities.Booking{}, err
 	}
-	showReturned, err := b.showRepository.FetchShowByShowId(booking.ShowId)
+	showReturned, err := b.ValidateForShowId(booking)
 	if err != nil {
-		appcontext.Logger.Error().
-			Str(constants.FAILED_GET_DB_CALL, err.Error()).
-			Msg(err.Error())
-		return entities.Booking{}, utils.WrapValidationError(errors.New(constants.FAILED_GET_DB_CALL), err.Error())
+		return entities.Booking{}, err
 	}
-	if len(showReturned) == 0 {
-		appcontext.Logger.Error().
-			Str(constants.SHOW_DOES_NOT_EXIT, constants.SHOW_DOES_NOT_EXIST_FOR_GIVEN_SHOW_ID).
-			Msg(constants.SHOW_DOES_NOT_EXIST_FOR_GIVEN_SHOW_ID)
-		return entities.Booking{}, utils.WrapValidationError(errors.New(constants.SHOW_DOES_NOT_EXIT), constants.SHOW_DOES_NOT_EXIST_FOR_GIVEN_SHOW_ID)
-	}
-	if showReturned[0].AvailableSeats-booking.Seats < 0 {
-		appcontext.Logger.Error().
-			Str(constants.AVAILABLE_SEATS_LESS_COMPARED_TO_REQUESTED, fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, booking.Seats)).
-			Msg(fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, booking.Seats))
-		return entities.Booking{}, utils.WrapValidationError(errors.New(constants.AVAILABLE_SEATS_LESS_COMPARED_TO_REQUESTED), fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, booking.Seats))
-	}
-	booking.TotalPrice = showReturned[0].SeatPrice * float64(booking.Seats)
-	availableSeats := showReturned[0].AvailableSeats - booking.Seats
-	booking.MovieId = int(showReturned[0].MovieId.Int64)
-	if err := b.showRepository.UpdateSeatsByShowId(availableSeats, booking.ShowId); err != nil {
+	if err := b.UpdateAvailableSeats(&booking, showReturned); err != nil {
 		return entities.Booking{}, err
 	}
 	if err := b.bookingRepository.InsertBooking(&booking); err != nil {
@@ -66,6 +48,39 @@ func (b bookingService) Add(booking entities.Booking) (entities.Booking, error) 
 		return entities.Booking{}, errors.Wrap(errors.New(constants.CREATE_BOOKING_FAILED), err.Error())
 	}
 	return booking, nil
+}
+
+func (b bookingService) UpdateAvailableSeats(booking *entities.Booking, showReturned []entities.Show) error {
+	booking.TotalPrice = showReturned[0].SeatPrice * float64(booking.Seats)
+	availableSeats := showReturned[0].AvailableSeats - booking.Seats
+	booking.MovieId = int(showReturned[0].MovieId.Int64)
+	if err := b.showRepository.UpdateSeatsByShowId(availableSeats, booking.ShowId); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (b bookingService) ValidateForShowId(booking entities.Booking) ([]entities.Show, error) {
+	showReturned, err := b.showRepository.FetchShowByShowId(booking.ShowId)
+	if err != nil {
+		appcontext.Logger.Error().
+			Str(constants.FAILED_GET_DB_CALL, err.Error()).
+			Msg(err.Error())
+		return []entities.Show{}, utils.WrapValidationError(errors.New(constants.FAILED_GET_DB_CALL), err.Error())
+	}
+	if len(showReturned) == 0 {
+		appcontext.Logger.Error().
+			Str(constants.SHOW_DOES_NOT_EXIT, constants.SHOW_DOES_NOT_EXIST_FOR_GIVEN_SHOW_ID).
+			Msg(constants.SHOW_DOES_NOT_EXIST_FOR_GIVEN_SHOW_ID)
+		return []entities.Show{}, utils.WrapValidationError(errors.New(constants.SHOW_DOES_NOT_EXIT), constants.SHOW_DOES_NOT_EXIST_FOR_GIVEN_SHOW_ID)
+	}
+	if showReturned[0].AvailableSeats-booking.Seats < 0 {
+		appcontext.Logger.Error().
+			Str(constants.AVAILABLE_SEATS_LESS_COMPARED_TO_REQUESTED, fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, booking.Seats)).
+			Msg(fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, booking.Seats))
+		return []entities.Show{}, utils.WrapValidationError(errors.New(constants.AVAILABLE_SEATS_LESS_COMPARED_TO_REQUESTED), fmt.Sprintf(constants.LESS_SEATS_AVAILABLE, showReturned[0].AvailableSeats, booking.Seats))
+	}
+	return showReturned, nil
 }
 
 func (b bookingService) GetBooking(userId int) ([]entities.Booking, error) {
