@@ -47,13 +47,13 @@ func (b bookingService) Add(booking entities.Booking) (entities.Booking, error) 
 		}
 		return entities.Booking{}, errors.Wrap(errors.New(constants.CREATE_BOOKING_FAILED), err.Error())
 	}
+	booking.MovieId = int(showReturned[0].MovieId.Int64)
 	return booking, nil
 }
 
 func (b bookingService) UpdateAvailableSeats(booking *entities.Booking, showReturned []entities.Show) error {
 	booking.TotalPrice = showReturned[0].SeatPrice * float64(booking.Seats)
 	availableSeats := showReturned[0].AvailableSeats - booking.Seats
-	booking.MovieId = int(showReturned[0].MovieId.Int64)
 	if err := b.showRepository.UpdateSeatsByShowId(availableSeats, booking.ShowId); err != nil {
 		return err
 	}
