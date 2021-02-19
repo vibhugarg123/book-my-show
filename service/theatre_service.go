@@ -27,31 +27,11 @@ func (t theatreService) Add(theatre entities.Theatre) (entities.Theatre, error) 
 	if err != nil {
 		return entities.Theatre{}, err
 	}
-	existingRegion, err := t.regionRepository.FetchRegionById(theatre.RegionId.Int64)
-	if err != nil {
-		appcontext.Logger.Error().
-			Str(constants.FAILED_FETCHING_RESULT_FROM_DATABASE, err.Error()).
-			Msg(constants.FAILED_GET_DB_CALL)
-		return entities.Theatre{}, utils.WrapValidationError(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
+	if err = t.ValidateForRegionIdExists(theatre.RegionId.Int64); err != nil {
+		return entities.Theatre{}, err
 	}
-	if len(existingRegion) == 0 {
-		appcontext.Logger.Error().
-			Str(constants.REGION_DO_NOT_EXIST, fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, theatre.RegionId.Int64)).
-			Msg(fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, theatre.RegionId.Int64))
-		return entities.Theatre{}, utils.WrapValidationError(errors.New(constants.REGION_DO_NOT_EXIST), fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, theatre.RegionId.Int64))
-	}
-	existingTheatres, err := t.theatreRepository.FetchTheatreByNameRegionIdAndAddress(theatre)
-	if err != nil {
-		appcontext.Logger.Error().
-			Str(constants.FAILED_FETCHING_RESULT_FROM_DATABASE, err.Error()).
-			Msg(constants.FAILED_GET_DB_CALL)
-		return entities.Theatre{}, utils.WrapValidationError(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
-	}
-	if len(existingTheatres) > 0 {
-		appcontext.Logger.Error().
-			Str(constants.THEATRE_ALREADY_EXIST, fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, theatre)).
-			Msg(fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, theatre))
-		return entities.Theatre{}, utils.WrapValidationError(errors.New(constants.THEATRE_ALREADY_EXIST), fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, theatre))
+	if err = t.ValidateForTheatreToBeAddedExists(theatre); err != nil {
+		return entities.Theatre{}, err
 	}
 	err = t.theatreRepository.InsertTheatre(theatre)
 	if err != nil {
@@ -61,6 +41,40 @@ func (t theatreService) Add(theatre entities.Theatre) (entities.Theatre, error) 
 		return entities.Theatre{}, utils.WrapValidationError(errors.New(constants.ADD_THEATRE_FAILED), err.Error())
 	}
 	return theatre, nil
+}
+
+func (t theatreService) ValidateForTheatreToBeAddedExists(theatre entities.Theatre) error {
+	existingTheatres, err := t.theatreRepository.FetchTheatreByNameRegionIdAndAddress(theatre)
+	if err != nil {
+		appcontext.Logger.Error().
+			Str(constants.FAILED_FETCHING_RESULT_FROM_DATABASE, err.Error()).
+			Msg(constants.FAILED_GET_DB_CALL)
+		return utils.WrapValidationError(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
+	}
+	if len(existingTheatres) > 0 {
+		appcontext.Logger.Error().
+			Str(constants.THEATRE_ALREADY_EXIST, fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, theatre)).
+			Msg(fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, theatre))
+		return utils.WrapValidationError(errors.New(constants.THEATRE_ALREADY_EXIST), fmt.Sprintf(constants.THEATRE_ALREADY_EXISTS, theatre))
+	}
+	return nil
+}
+
+func (t theatreService) ValidateForRegionIdExists(regionId int64) error {
+	existingRegion, err := t.regionRepository.FetchRegionById(regionId)
+	if err != nil {
+		appcontext.Logger.Error().
+			Str(constants.FAILED_FETCHING_RESULT_FROM_DATABASE, err.Error()).
+			Msg(constants.FAILED_GET_DB_CALL)
+		return utils.WrapValidationError(errors.New(constants.FAILED_FETCHING_RESULT_FROM_DATABASE), err.Error())
+	}
+	if len(existingRegion) == 0 {
+		appcontext.Logger.Error().
+			Str(constants.REGION_DO_NOT_EXIST, fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, regionId)).
+			Msg(fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, regionId))
+		return utils.WrapValidationError(errors.New(constants.REGION_DO_NOT_EXIST), fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, regionId))
+	}
+	return nil
 }
 
 func (t theatreService) GetTheatreByName(theatreName string) ([]entities.Theatre, error) {
