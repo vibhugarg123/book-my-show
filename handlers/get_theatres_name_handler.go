@@ -20,7 +20,7 @@ func NewGetTheatreByNameHandler(theatreService service.TheatreService) *GetTheat
 	}
 }
 
-// GetTheatresByNameRequest swagger:route GET /theatre/{theatre-name} theatre
+// GetTheatresByNameRequest swagger:route GET /theatre/{theatre-name} theatre noContent
 // Get all the theatres with theatre-name
 // Parameters:
 //  + name: theatre-name

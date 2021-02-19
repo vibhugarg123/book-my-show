@@ -561,7 +561,7 @@ paths:
   /theatre/{theatre-name}:
     get:
       description: Get all the theatres with theatre-name
-      operationId: theatre
+      operationId: noContent
       parameters:
       - in: path
         name: theatre-name
@@ -576,6 +576,8 @@ paths:
           $ref: '#/responses/errorResponse'
         "500":
           $ref: '#/responses/errorResponse'
+      tags:
+      - theatre
   /user:
     post:
       description: Adds a new user
@@ -633,6 +635,8 @@ responses:
     description: ""
     schema:
       $ref: '#/definitions/LoginResponse'
+  noContent:
+    description: ""
   theatresByNameResponse:
     description: ""
     schema:

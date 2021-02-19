@@ -131,6 +131,10 @@ type loginResponseWrapper struct {
 	Body response.LoginResponse
 }
 
+// swagger:response noContent
+type noContentRequest struct {
+}
+
 // swagger:response theatresByNameResponse
 type theatresByNameResponseWrapper struct {
 	// in: body
