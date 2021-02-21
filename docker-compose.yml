@@ -3,7 +3,7 @@ services:
   app:
     container_name: book_my_show
     build: .
-    command: /app/book-my-show server
+    command: bash -c "/app/book-my-show migrate:run &&/app/book-my-show server"
     ports:
       - 8089:8089
     restart: on-failure
@@ -30,16 +30,6 @@ services:
       - database_mysql:/var/lib/mysql
     networks:
       - fullstack
-
-  migrate:
-    image: migrate/migrate
-    networks:
-      - fullstack
-    volumes:
-      - .:/migrations
-    command: ["-path", "/usr/src/app/book_my_show/db/migration", "-database",  "mysql://root:ons_vg@tcp(127.0.0.1:3306)/BOOK_MY_SHOW", "up"]
-    links:
-      - fullstack-mysql
 
 volumes:
   api:

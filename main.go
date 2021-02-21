@@ -6,6 +6,7 @@ import (
 	"github.com/vibhugarg123/book-my-show/appcontext"
 	"github.com/vibhugarg123/book-my-show/config"
 	"github.com/vibhugarg123/book-my-show/constants"
+	"github.com/vibhugarg123/book-my-show/db"
 	"github.com/vibhugarg123/book-my-show/server"
 	"os"
 	"runtime"
@@ -27,6 +28,14 @@ func main() {
 				Usage:   "starts the http server of book my show",
 				Action: func(c *cli.Context) error {
 					return server.Start()
+				},
+			},
+			{
+				Name:        "migrate:run",
+				Description: "Running Migration",
+				Action: func(c *cli.Context) error {
+					appcontext.InitMySqlConnection()
+					return db.RunDatabaseMigrations()
 				},
 			},
 		},
