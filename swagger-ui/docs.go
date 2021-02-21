@@ -140,3 +140,9 @@ type theatresByNameResponseWrapper struct {
 	// in: body
 	Body []response.AddTheatreResponse
 }
+
+// swagger:response regionsByIdResponse
+type regionsByIdResponseWrapper struct {
+	// in: body
+	Body response.AddRegionResponse
+}

@@ -22,6 +22,17 @@ func NewGetRegionHandler(regionService service.RegionService) *GetRegionHandler 
 	}
 }
 
+// swagger:route GET /region/{region-id} region noContent
+// Get the regions with the respective region-id
+// Parameters:
+//  + name: region-id
+//    type: string
+//    in: path
+//    required: true
+// Responses:
+//	200: regionsByIdResponse
+//  404: errorResponse
+//  500: errorResponse
 func (grh *GetRegionHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	regionIdInString := vars["region-id"]

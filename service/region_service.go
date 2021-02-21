@@ -60,7 +60,7 @@ func (r regionService) GetRegionById(regionId int) (entities.Region, error) {
 		appcontext.Logger.Error().
 			Str(constants.REGION_DO_NOT_EXIST, fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, regionId)).
 			Msg(fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, regionId))
-		return entities.Region{}, utils.WrapValidationError(errors.New(constants.REGION_CREATION_FAILED), fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, regionId))
+		return entities.Region{}, utils.WrapValidationError(errors.New(constants.REGION_DO_NOT_EXIST), fmt.Sprintf(constants.REGION_DOES_NOT_EXIST, regionId))
 	}
 	return region[0], nil
 }

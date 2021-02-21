@@ -522,6 +522,26 @@ paths:
           $ref: '#/responses/errorResponse'
       tags:
       - region
+  /region/{region-id}:
+    get:
+      description: Get the regions with the respective region-id
+      operationId: noContent
+      parameters:
+      - in: path
+        name: region-id
+        required: true
+        schema:
+          type: string
+        type: string
+      responses:
+        "200":
+          $ref: '#/responses/regionsByIdResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - region
   /show:
     post:
       description: Adds a new show to a hall in a theatre
@@ -637,6 +657,10 @@ responses:
       $ref: '#/definitions/LoginResponse'
   noContent:
     description: ""
+  regionsByIdResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/AddRegionResponse'
   theatresByNameResponse:
     description: ""
     schema:
