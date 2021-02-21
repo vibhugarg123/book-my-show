@@ -146,3 +146,21 @@ type regionsByIdResponseWrapper struct {
 	// in: body
 	Body response.AddRegionResponse
 }
+
+// swagger:response activeMoviesResponse
+type activeMoviesResponseWrapper struct {
+	// in: body
+	Body []response.AddMovieResponse
+}
+
+// swagger:response hallsByTheatreIdResponse
+type hallsByTheatreIdResponseWrapper struct {
+	// in: body
+	Body []response.AddHallResponse
+}
+
+// swagger:response bookingsByUserIdResponse
+type bookingsByUserIdResponseWrapper struct {
+	// in: body
+	Body []response.AddBookingResponse
+}

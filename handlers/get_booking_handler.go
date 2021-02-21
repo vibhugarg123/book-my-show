@@ -22,6 +22,17 @@ func NewGetBookingHandler(bookingService service.BookingService) *GetBookingHand
 	}
 }
 
+// swagger:route GET /booking/userid/{user-id} booking noContent
+// Get the bookings of a particular user
+// Parameters:
+//  + name: user-id
+//    type: string
+//    in: path
+//    required: true
+// Responses:
+//	200: bookingsByUserIdResponse
+//  404: errorResponse
+//  500: errorResponse
 func (gbh *GetBookingHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	userIdInString := vars["user-id"]

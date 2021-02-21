@@ -449,6 +449,26 @@ paths:
           $ref: '#/responses/errorResponse'
       tags:
       - booking
+  /booking/userid/{user-id}:
+    get:
+      description: Get the bookings of a particular user
+      operationId: noContent
+      parameters:
+      - in: path
+        name: user-id
+        required: true
+        schema:
+          type: string
+        type: string
+      responses:
+        "200":
+          $ref: '#/responses/bookingsByUserIdResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - booking
   /hall:
     post:
       description: Adds a new hall to a theatre
@@ -461,6 +481,26 @@ paths:
       responses:
         "200":
           $ref: '#/responses/addHallResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - hall
+  /hall/{theatre-id}:
+    get:
+      description: Get the halls with the respective theatre-id
+      operationId: noContent
+      parameters:
+      - in: path
+        name: theatre-id
+        required: true
+        schema:
+          type: string
+        type: string
+      responses:
+        "200":
+          $ref: '#/responses/hallsByTheatreIdResponse'
         "404":
           $ref: '#/responses/errorResponse'
         "500":
@@ -497,6 +537,19 @@ paths:
       responses:
         "200":
           $ref: '#/responses/addMovieResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - movie
+  /movies:
+    get:
+      description: Get the list of active movies from the database
+      operationId: noContent
+      responses:
+        "200":
+          $ref: '#/responses/activeMoviesResponse'
         "404":
           $ref: '#/responses/errorResponse'
         "500":
@@ -619,6 +672,12 @@ paths:
 produces:
 - application/json
 responses:
+  activeMoviesResponse:
+    description: ""
+    schema:
+      items:
+        $ref: '#/definitions/AddMovieResponse'
+      type: array
   addBookingResponse:
     description: ""
     schema:
@@ -647,10 +706,22 @@ responses:
     description: ""
     schema:
       $ref: '#/definitions/AddUserResponse'
+  bookingsByUserIdResponse:
+    description: ""
+    schema:
+      items:
+        $ref: '#/definitions/AddBookingResponse'
+      type: array
   errorResponse:
     description: ""
     schema:
       $ref: '#/definitions/Error'
+  hallsByTheatreIdResponse:
+    description: ""
+    schema:
+      items:
+        $ref: '#/definitions/AddHallResponse'
+      type: array
   loginResponse:
     description: ""
     schema:

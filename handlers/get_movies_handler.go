@@ -18,6 +18,12 @@ func NewGetMoviesHandler(movieService service.MovieService) *GetMoviesHandler {
 	}
 }
 
+// swagger:route GET /movies movie noContent
+// Get the list of active movies from the database
+// Responses:
+//	200: activeMoviesResponse
+//  404: errorResponse
+//  500: errorResponse
 func (gmh *GetMoviesHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	movies, err := gmh.service.GetActiveMovies()
 	if utils.IsValidationError(err) {

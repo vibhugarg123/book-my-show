@@ -22,6 +22,17 @@ func NewGetHallHandler(hallService service.HallService) *GetHallHandler {
 	}
 }
 
+// swagger:route GET /hall/{theatre-id} hall noContent
+// Get the halls with the respective theatre-id
+// Parameters:
+//  + name: theatre-id
+//    type: string
+//    in: path
+//    required: true
+// Responses:
+//	200: hallsByTheatreIdResponse
+//  404: errorResponse
+//  500: errorResponse
 func (ghh *GetHallHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	theatreIdInString := vars["theatre-id"]
