@@ -9,7 +9,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/vibhugarg123/book-my-show/config"
 	"github.com/vibhugarg123/book-my-show/constants"
-	"os"
 )
 
 var Db *sqlx.DB
@@ -19,7 +18,7 @@ func MySqlConnection() *sqlx.DB {
 }
 
 func InitMySqlConnection() error {
-	dbUrl := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local&multiStatements=true", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME"))
+	dbUrl := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local&multiStatements=true", config.DatabaseUserName(), config.DatabasePassword(), config.DatabaseHostIP(), config.DatabasePort(), "BOOK_MY_SHOW")
 	Logger.Info().Msgf("connection url %s", dbUrl)
 	connection, err := sqlx.Connect(config.DatabaseDriverName(), dbUrl)
 	if err != nil {
